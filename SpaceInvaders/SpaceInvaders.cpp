@@ -2,19 +2,104 @@
 //
 
 #include <iostream>
+#include <cstdio>
+#include <GL/glew.h>
+#include <gl/GL.h>
+#include <GLFW/glfw3.h>
+
+
+#define GL_ERROR_CASE(glerror)\
+    case glerror: snprintf(error, sizeof(error), "%s", #glerror)
+
+inline void gl_debug(const char* file, int line) {
+    GLenum err;
+    while ((err = glGetError()) != GL_NO_ERROR) {
+        char error[128];
+
+        switch (err) {
+            GL_ERROR_CASE(GL_INVALID_ENUM); break;
+            GL_ERROR_CASE(GL_INVALID_VALUE); break;
+            GL_ERROR_CASE(GL_INVALID_OPERATION); break;
+            GL_ERROR_CASE(GL_INVALID_FRAMEBUFFER_OPERATION); break;
+            GL_ERROR_CASE(GL_OUT_OF_MEMORY); break;
+        default: snprintf(error, sizeof(error), "%s", "UNKNOWN_ERROR"); break;
+        }
+
+        fprintf(stderr, "%s - %s: %d\n", error, file, line);
+    }
+}
+
+#undef GL_ERROR_CASE
+
+void errorCallback(int error, const char* description)
+{
+    fprintf(stderr, "Error: %s\n", description);
+}
+
 
 int main()
 {
+    //GLFWerrorfun glfwSetErrorCallback(GLFWerrorfun cbfun);
+
+    glfwSetErrorCallback(errorCallback);
+
+    GLFWwindow* window;
+
+    if (!glfwInit())
+    {
+        return -1;
+    }
+
+
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
+
+    //let's creata a window
+    window = glfwCreateWindow(640, 480, "Space Invaders", NULL, NULL);
+    if (!window)
+    {
+        glfwTerminate();
+        return -1;
+    }
+
+    glfwMakeContextCurrent(window);
+
+    //initialize GLEW
+    GLenum err = glewInit();
+    if (err != GLEW_OK)
+    {
+        fprintf(stderr, "Error initializing GLEW.\n");
+        glfwTerminate();
+        return -1;
+    }
+
+    int glVersion[2] = { -1, 1 };
+    glGetIntegerv(GL_MAJOR_VERSION, &glVersion[0]);
+    glGetIntegerv(GL_MINOR_VERSION, &glVersion[1]);
+
+    gl_debug(__FILE__, __LINE__);
+
+    printf("Using OpenGL: %d.%d\n", glVersion[0], glVersion[1]);
+    printf("Renderer used: %s\n", glGetString(GL_RENDERER));
+    printf("Shading Language: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+    glClearColor(1.0, 0.0, 0.0, 1.0);
+    while (!glfwWindowShouldClose(window))
+    {
+        /* Render here */
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glfwSwapBuffers(window);
+
+        glfwPollEvents();
+    }
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
+
+
     std::cout << "Hello World!\n";
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
