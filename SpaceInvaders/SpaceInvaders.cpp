@@ -1,10 +1,10 @@
-// SpaceInvaders.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+// SpaceInvaders.cpp 
+// Recreating the classic game in C++ and openGL
 
 #include <iostream>
 #include <cstdio>
 #include <GL/glew.h>
-#include <gl/GL.h>
+//#include <gl/GL.h>
 #include <GLFW/glfw3.h>
 
 
@@ -36,19 +36,39 @@ void errorCallback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
+const size_t buffer_width = 224;
+const size_t buffer_height = 256;
+
+struct Buffer
+{
+    size_t width, height;
+    uint32_t* pixels; //32bit makes indexing easier
+};
+
+
+//Sets left-most 24-bits to the r,g,b values. 8 right-most bits are set to 255, alpha channel won't be used
+uint32_t rgbTOuint32(uint8_t r, uint8_t g, uint8_t b)
+{
+    return (r << 24) | (g << 16) | (b << 8) | 255;
+}
+
+
+void buffer_clear(Buffer* buffer, uint32_t color)
+{
+    for (size_t i = 0; i < buffer->width * buffer->height; i++)
+    {
+        buffer->pixels[i] = color;
+    }
+}
+
 
 int main()
 {
-    //GLFWerrorfun glfwSetErrorCallback(GLFWerrorfun cbfun);
-
     glfwSetErrorCallback(errorCallback);
 
     GLFWwindow* window;
 
-    if (!glfwInit())
-    {
-        return -1;
-    }
+    if (!glfwInit()){ return -1; }
 
 
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -86,6 +106,15 @@ int main()
     printf("Renderer used: %s\n", glGetString(GL_RENDERER));
     printf("Shading Language: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+
+    uint32_t clear_color = rgbTOuint32(0, 128, 0);
+    Buffer buffer;
+    buffer.width = buffer_width;
+    buffer.height = buffer_height;
+    buffer.pixels = new uint32_t[buffer.width * buffer.height];
+    buffer_clear(&buffer, clear_color);
+
+
     glClearColor(1.0, 0.0, 0.0, 1.0);
     while (!glfwWindowShouldClose(window))
     {
@@ -97,9 +126,13 @@ int main()
         glfwPollEvents();
     }
 
+
+
+
+
     glfwDestroyWindow(window);
     glfwTerminate();
 
 
-    std::cout << "Hello World!\n";
+   
 }
