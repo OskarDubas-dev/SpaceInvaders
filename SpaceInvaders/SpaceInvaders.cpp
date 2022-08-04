@@ -233,7 +233,34 @@ int main()
         return -1;
     }
 
-   
+    GLuint buffer_texture;
+    //Generate texture
+    glGenTextures(1, &buffer_texture);
+    glBindTexture(GL_TEXTURE_2D, buffer_texture);
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        0,
+        GL_RGB8,
+        buffer.width,
+        buffer.height,
+        0,
+        GL_RGBA,
+        GL_UNSIGNED_INT_8_8_8_8,
+        buffer.pixels
+    );
+    //Each pixel is in the rgba format and is represented as 4 unsigned 8-bit integers
+    //tells GPU not to apply any filtering(smoothing) when reading pixels
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    //if GPU tries read beyond texture bounds use value of edges instead
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    
+    GLint location = glGetUniformLocation(shader_id, "buffer");
+    glUniform1i(location, 0);
+
+
+
 
     glfwDestroyWindow(window);
     glfwTerminate();
