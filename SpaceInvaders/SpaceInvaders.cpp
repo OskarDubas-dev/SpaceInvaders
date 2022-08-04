@@ -99,8 +99,12 @@ void errorCallback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-const size_t buffer_width = 224;
-const size_t buffer_height = 256;
+//const size_t buffer_width = 224;
+//const size_t buffer_height = 256;
+
+const size_t buffer_width = 448;
+const size_t buffer_height = 512;
+
 
 struct Buffer
 {
@@ -153,8 +157,7 @@ int main()
 {
     glfwSetErrorCallback(errorCallback);
 
-    GLFWwindow* window;
-
+    
     if (!glfwInit()){ return -1; }
 
 
@@ -165,7 +168,7 @@ int main()
 
 
     //let's creata a window
-    window = glfwCreateWindow(640, 480, "Space Invaders", NULL, NULL);
+    GLFWwindow*  window = glfwCreateWindow(buffer_width, buffer_height, "Space Invaders", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
@@ -202,9 +205,33 @@ int main()
     buffer.width = buffer_width;
     buffer.height = buffer_height;
     buffer.pixels = new uint32_t[buffer.width * buffer.height];
-    bufferClear(&buffer, clear_colour);
+    bufferClear(&buffer, 0);
+
+    //Generate texture
+    GLuint buffer_texture;
+    glGenTextures(1, &buffer_texture);
+    glBindTexture(GL_TEXTURE_2D, buffer_texture);
+    glTexImage2D(
+        GL_TEXTURE_2D,
+        0,
+        GL_RGB8,
+        buffer.width,
+        buffer.height,
+        0,
+        GL_RGBA,
+        GL_UNSIGNED_INT_8_8_8_8,
+        buffer.pixels
+    );
+    //Each pixel is in the rgba format and is represented as 4 unsigned 8-bit integers
+    //tells GPU not to apply any filtering(smoothing) when reading pixels
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    //if GPU tries read beyond texture bounds use value of edges instead
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 
+    // Generate fullscreen triangle
     GLuint fullscreen_triangle_vao;
     glGenVertexArrays(1, &fullscreen_triangle_vao);
     glBindVertexArray(fullscreen_triangle_vao);
@@ -250,34 +277,14 @@ int main()
     glUseProgram(shader_id);
 
 
-    GLuint buffer_texture;
-    //Generate texture
-    glGenTextures(1, &buffer_texture);
-    glBindTexture(GL_TEXTURE_2D, buffer_texture);
-    glTexImage2D(
-        GL_TEXTURE_2D,
-        0,
-        GL_RGB8,
-        buffer.width,
-        buffer.height,
-        0,
-        GL_RGBA,
-        GL_UNSIGNED_INT_8_8_8_8,
-        buffer.pixels
-    );
-    //Each pixel is in the rgba format and is represented as 4 unsigned 8-bit integers
-    //tells GPU not to apply any filtering(smoothing) when reading pixels
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    //if GPU tries read beyond texture bounds use value of edges instead
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+   
     
     GLint location = glGetUniformLocation(shader_id, "buffer");
     glUniform1i(location, 0);
 
     //before game loop disable depth testing and bind the vertex array 
     glDisable(GL_DEPTH_TEST);
+    glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(fullscreen_triangle_vao);
 
     Sprite alien_sprite;
@@ -299,9 +306,19 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
+        //glClear(GL_COLOR_BUFFER_BIT);
+        bufferClear(&buffer, clear_colour);
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        drawSprite(&buffer, alien_sprite, 118, 128, rgbTOuint32(128, 0, 0));
+
+        glTexSubImage2D(
+            GL_TEXTURE_2D, 0, 0, 0,
+            buffer.width, buffer.height,
+            GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
+            buffer.pixels
+        );
+
+        glDrawArrays(GL_TRIANGLES, 0, 4);
 
         glfwSwapBuffers(window);
 
