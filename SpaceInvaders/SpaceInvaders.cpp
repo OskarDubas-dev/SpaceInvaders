@@ -63,6 +63,35 @@ inline void gl_debug(const char* file, int line) {
 
 #undef GL_ERROR_CASE
 
+// Used to intercept OpenGL shader information during compilation
+void validateShader(GLuint shader, const char* file = 0)
+{
+    static const GLsizei BUFFER_SIZE = 512;
+    GLchar buffer[BUFFER_SIZE];
+    GLsizei length = 0;
+    glGetShaderInfoLog(shader, BUFFER_SIZE, &length, buffer);
+
+    if (length > 0)
+    {
+        printf("Shader %d(%s) compile error: %s\n", shader, (file ? file : ""), buffer);
+    }
+}
+
+// Used to intercept OpenGL program information during compilation
+bool validateProgram(GLuint program)
+{
+    static const GLsizei BUFFER_SIZE = 512;
+    GLchar buffer[BUFFER_SIZE];
+    GLsizei length = 0;
+    glGetShaderInfoLog(program, BUFFER_SIZE, &length, buffer);
+
+    if (length > 0)
+    {
+        printf("Program %d link error: %s\n", program, buffer);
+        return false;
+    }
+    return true;
+}
 
 
 void errorCallback(int error, const char* description)
