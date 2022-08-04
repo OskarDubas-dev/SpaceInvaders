@@ -99,11 +99,11 @@ void errorCallback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-//const size_t buffer_width = 224;
-//const size_t buffer_height = 256;
+const size_t buffer_width = 224;
+const size_t buffer_height = 256;
 
-const size_t buffer_width = 448;
-const size_t buffer_height = 512;
+//const size_t buffer_width = 448;
+//const size_t buffer_height = 512;
 
 
 struct Buffer
@@ -143,15 +143,15 @@ void drawSprite(Buffer* buffer, const Sprite& sprite, size_t x, size_t y, uint32
     {
         for (size_t yi = 0; yi < sprite.height; ++yi)
         {
-            size_t sy = sprite.height - 1 + y - yi;
-            size_t sx = x + xi;
-            if (sprite.pixels[yi * sprite.width + xi] && sy < buffer->height && sx < buffer->width)
+            if (sprite.pixels[yi * sprite.width + xi] &&
+                (sprite.height - 1 + y - yi) < buffer->height &&
+                (x + xi) < buffer->width)
             {
-                buffer->pixels[sy * buffer->width + sx] = colour;
+                buffer->pixels[(sprite.height - 1 + y - yi) * buffer->width + (x + xi)] = colour;
             }
         }
     }
-};
+}
 
 int main()
 {
@@ -168,7 +168,7 @@ int main()
 
 
     //let's creata a window
-    GLFWwindow*  window = glfwCreateWindow(buffer_width, buffer_height, "Space Invaders", NULL, NULL);
+    GLFWwindow*  window = glfwCreateWindow(2 * buffer_width, 2 * buffer_height, "Space Invaders", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
