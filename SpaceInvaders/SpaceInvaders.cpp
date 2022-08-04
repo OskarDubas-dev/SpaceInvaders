@@ -171,24 +171,15 @@ int main()
     printf("Shading Language: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 
-    uint32_t clear_color = rgbTOuint32(0, 128, 0);
+    glClearColor(1.0, 0.0, 0.0, 1.0);
+
+    //create graphics buffer
+    uint32_t clear_color = rgbTOuint32(0, 128, 0); //green
     Buffer buffer;
     buffer.width = buffer_width;
     buffer.height = buffer_height;
     buffer.pixels = new uint32_t[buffer.width * buffer.height];
     bufferClear(&buffer, clear_color);
-
-
-    glClearColor(1.0, 0.0, 0.0, 1.0);
-    while (!glfwWindowShouldClose(window))
-    {
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        glfwSwapBuffers(window);
-
-        glfwPollEvents();
-    }
 
 
     GLuint fullscreen_triangle_vao;
@@ -233,6 +224,9 @@ int main()
         return -1;
     }
 
+    glUseProgram(shader_id);
+
+
     GLuint buffer_texture;
     //Generate texture
     glGenTextures(1, &buffer_texture);
@@ -259,8 +253,24 @@ int main()
     GLint location = glGetUniformLocation(shader_id, "buffer");
     glUniform1i(location, 0);
 
+    //before game loop disable depth testing and bind the vertex array 
+    glDisable(GL_DEPTH_TEST);
+    glBindVertexArray(fullscreen_triangle_vao);
 
 
+    
+
+    while (!glfwWindowShouldClose(window))
+    {
+        /* Render here */
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        glfwSwapBuffers(window);
+
+        glfwPollEvents();
+    }
 
     glfwDestroyWindow(window);
     glfwTerminate();
