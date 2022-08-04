@@ -117,11 +117,11 @@ uint32_t rgbTOuint32(uint8_t r, uint8_t g, uint8_t b)
 
 
 //Iterates over all pixels and sets each of them to a color
-void bufferClear(Buffer* buffer, uint32_t color)
+void bufferClear(Buffer* buffer, uint32_t colour)
 {
     for (size_t i = 0; i < buffer->width * buffer->height; i++)
     {
-        buffer->pixels[i] = color;
+        buffer->pixels[i] = colour;
     }
 }
 
@@ -132,7 +132,22 @@ struct Sprite
     uint8_t* pixels;
 };
 
-
+//Function draws the "1" pixels at given coordinates if they are within buffer bounds
+void drawSprite(Buffer* buffer, const Sprite& sprite, size_t x, size_t y, uint32_t colour)
+{
+    for (size_t xi = 0; xi < sprite.width; ++xi)
+    {
+        for (size_t yi = 0; yi < sprite.height; ++yi)
+        {
+            size_t sy = sprite.height - 1 + y - yi;
+            size_t sx = x + xi;
+            if (sprite.pixels[yi * sprite.width + xi] && sy < buffer->height && sx < buffer->width)
+            {
+                buffer->pixels[sy * buffer->width + sx] = colour;
+            }
+        }
+    }
+};
 
 int main()
 {
@@ -182,12 +197,12 @@ int main()
     glClearColor(1.0, 0.0, 0.0, 1.0);
 
     //create graphics buffer
-    uint32_t clear_color = rgbTOuint32(0, 128, 0); //green
+    uint32_t clear_colour = rgbTOuint32(0, 128, 0); //green
     Buffer buffer;
     buffer.width = buffer_width;
     buffer.height = buffer_height;
     buffer.pixels = new uint32_t[buffer.width * buffer.height];
-    bufferClear(&buffer, clear_color);
+    bufferClear(&buffer, clear_colour);
 
 
     GLuint fullscreen_triangle_vao;
