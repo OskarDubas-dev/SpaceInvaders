@@ -125,6 +125,14 @@ void bufferClear(Buffer* buffer, uint32_t color)
     }
 }
 
+struct Sprite
+{
+    
+    size_t width, height;
+    uint8_t* pixels;
+};
+
+
 
 int main()
 {
