@@ -191,6 +191,47 @@ int main()
     }
 
 
+    GLuint fullscreen_triangle_vao;
+    glGenVertexArrays(1, &fullscreen_triangle_vao);
+    glBindVertexArray(fullscreen_triangle_vao);
+
+    GLuint shader_id = glCreateProgram();
+
+    //Create vertex shader
+    {
+        GLuint shader_vp = glCreateShader(GL_VERTEX_SHADER);
+
+        glShaderSource(shader_vp, 1, &shaders::vertex_shader, 0);
+        glCompileShader(shader_vp);
+        validateShader(shader_vp, shaders::vertex_shader);
+        glAttachShader(shader_id, shader_vp);
+
+        glDeleteShader(shader_vp);
+    }
+
+    //Create fragment shader
+    {
+        GLuint shader_fp = glCreateShader(GL_FRAGMENT_SHADER);
+
+        glShaderSource(shader_fp, 1, &shaders::fragment_shader, 0);
+        glCompileShader(shader_fp);
+        validateShader(shader_fp, shaders::fragment_shader);
+        glAttachShader(shader_id, shader_fp);
+
+        glDeleteShader(shader_fp);
+    }
+
+    glLinkProgram(shader_id);
+
+    //Intercept errors if any occur
+    if (!validateProgram(shader_id))
+    {
+        fprintf(stderr, "Error while validating shader.\n");
+        glfwTerminate();
+        glDeleteVertexArrays(1, &fullscreen_triangle_vao);
+        delete[] buffer.pixels;
+        return -1;
+    }
 
    
 
