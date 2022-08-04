@@ -280,7 +280,20 @@ int main()
     glDisable(GL_DEPTH_TEST);
     glBindVertexArray(fullscreen_triangle_vao);
 
-
+    Sprite alien_sprite;
+    alien_sprite.width = 11;
+    alien_sprite.height = 8;
+    alien_sprite.pixels = new uint8_t[11 * 8]
+    {
+        0,0,1,0,0,0,0,0,1,0,0, // ..@.....@..
+        0,0,0,1,0,0,0,1,0,0,0, // ...@...@...
+        0,0,1,1,1,1,1,1,1,0,0, // ..@@@@@@@..
+        0,1,1,0,1,1,1,0,1,1,0, // .@@.@@@.@@.
+        1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@
+        1,0,1,1,1,1,1,1,1,0,1, // @.@@@@@@@.@
+        1,0,1,0,0,0,0,0,1,0,1, // @.@.....@.@
+        0,0,0,1,1,0,1,1,0,0,0  // ...@@.@@...
+    };
     
 
     while (!glfwWindowShouldClose(window))
