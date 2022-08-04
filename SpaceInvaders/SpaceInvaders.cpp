@@ -11,6 +11,38 @@
 #define GL_ERROR_CASE(glerror)\
     case glerror: snprintf(error, sizeof(error), "%s", #glerror)
 
+
+namespace shaders {
+    const char* vertex_shader = 
+        "\n"
+        "#version 330\n"
+        "\n"
+        "noperspective out vec2 TexCoord;\n"
+        "\n"
+        "void main(void){\n"
+        "\n"
+        "    TexCoord.x = (gl_VertexID == 2)? 2.0: 0.0;\n"
+        "    TexCoord.y = (gl_VertexID == 1)? 2.0: 0.0;\n"
+        "    \n"
+        "    gl_Position = vec4(2.0 * TexCoord - 1.0, 0.0, 1.0);\n"
+        "}\n";
+
+    const char* fragment_shader =
+        "\n"
+        "#version 330\n"
+        "\n"
+        "uniform sampler2D buffer;\n"
+        "noperspective in vec2 TexCoord;\n"
+        "\n"
+        "out vec3 outColor;\n"
+        "\n"
+        "void main(void){\n"
+        "    outColor = texture(buffer, TexCoord).rgb;\n"
+        "}\n";
+}
+
+
+
 inline void gl_debug(const char* file, int line) {
     GLenum err;
     while ((err = glGetError()) != GL_NO_ERROR) {
@@ -30,6 +62,8 @@ inline void gl_debug(const char* file, int line) {
 }
 
 #undef GL_ERROR_CASE
+
+
 
 void errorCallback(int error, const char* description)
 {
@@ -53,7 +87,8 @@ uint32_t rgbTOuint32(uint8_t r, uint8_t g, uint8_t b)
 }
 
 
-void buffer_clear(Buffer* buffer, uint32_t color)
+//Iterates over all pixels and sets each of them to a color
+void bufferClear(Buffer* buffer, uint32_t color)
 {
     for (size_t i = 0; i < buffer->width * buffer->height; i++)
     {
@@ -112,7 +147,7 @@ int main()
     buffer.width = buffer_width;
     buffer.height = buffer_height;
     buffer.pixels = new uint32_t[buffer.width * buffer.height];
-    buffer_clear(&buffer, clear_color);
+    bufferClear(&buffer, clear_color);
 
 
     glClearColor(1.0, 0.0, 0.0, 1.0);
@@ -128,7 +163,7 @@ int main()
 
 
 
-
+   
 
     glfwDestroyWindow(window);
     glfwTerminate();
