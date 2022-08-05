@@ -142,6 +142,12 @@ struct Alien
     uint8_t type;
 };
 
+struct Player
+{
+    size_t x, y;
+    uint8_t life;
+};
+
 
 //Function draws the "1" pixels at given coordinates if they are within buffer bounds
 void drawSprite(Buffer* buffer, const Sprite& sprite, size_t x, size_t y, uint32_t colour)
