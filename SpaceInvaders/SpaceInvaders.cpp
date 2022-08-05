@@ -136,6 +136,13 @@ struct Sprite
     uint8_t* pixels;
 };
 
+struct Alien
+{
+    size_t x, y;
+    uint8_t type;
+};
+
+
 //Function draws the "1" pixels at given coordinates if they are within buffer bounds
 void drawSprite(Buffer* buffer, const Sprite& sprite, size_t x, size_t y, uint32_t colour)
 {
