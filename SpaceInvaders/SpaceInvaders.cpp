@@ -148,6 +148,13 @@ struct Player
     uint8_t life;
 };
 
+struct Game
+{
+    size_t width, height;
+    size_t num_aliens;
+    Alien* aliens;
+    Player player;
+};
 
 //Function draws the "1" pixels at given coordinates if they are within buffer bounds
 void drawSprite(Buffer* buffer, const Sprite& sprite, size_t x, size_t y, uint32_t colour)
