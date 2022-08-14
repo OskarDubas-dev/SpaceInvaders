@@ -138,8 +138,8 @@ struct Sprite
 
 struct Alien
 {
-    size_t x, y;
-    uint8_t type;
+    size_t x, y; 
+    uint8_t type; //3 differnet types of aliens
 };
 
 struct Player
@@ -307,6 +307,7 @@ int main()
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(fullscreen_triangle_vao);
 
+    //Initialise SPRITE struct
     Sprite player_sprite;
     player_sprite.width = 11;
     player_sprite.height = 7;
@@ -337,6 +338,11 @@ int main()
         0,0,0,1,1,0,1,1,0,0,0  // ...@@.@@...
     };
     
+    //Initilise GAME struct
+    Game game;
+
+
+
 
     while (!glfwWindowShouldClose(window))
     {
