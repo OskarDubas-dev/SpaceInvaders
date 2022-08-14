@@ -356,14 +356,7 @@ int main()
 
     //***GAME LOOP***
 
-    //
-
-    //Draw Aliens
-    for (size_t ai = 0; ai < game.num_aliens; ++ai)
-    {
-        const Alien& alien = game.aliens[ai];
-        drawSprite(&buffer, alien_sprite, alien.x, alien.y, rgbTOuint32(128, 0, 0));
-    }
+    
 
 
     while (!glfwWindowShouldClose(window))
@@ -372,7 +365,26 @@ int main()
         //glClear(GL_COLOR_BUFFER_BIT);
         bufferClear(&buffer, clear_colour);
 
-        drawSprite(&buffer, alien_sprite, 118, 128, rgbTOuint32(128, 0, 0));
+        drawSprite(&buffer, player_sprite, game.player.x, game.player.y, rgbTOuint32(128, 0, 0));
+
+        //Initilise alien positions
+        for (size_t yi = 0; yi < 5; ++yi)
+        {
+            for (size_t xi = 0; xi < 11; ++xi)
+            {
+                //yi * 11 + xi
+                game.aliens[yi * 11 + xi].x = 16 * xi + 20;
+                game.aliens[yi * 11 + xi].y = 17 * yi + 128;
+
+            }
+        }
+
+        //Draw Aliens
+        for (size_t ai = 0; ai < game.num_aliens; ++ai)
+        {
+            const Alien& alien = game.aliens[ai];
+            drawSprite(&buffer, alien_sprite, alien.x, alien.y, rgbTOuint32(128, 0, 0));
+        }
 
         glTexSubImage2D(
             GL_TEXTURE_2D, 0, 0, 0,
