@@ -356,8 +356,14 @@ int main()
 
     //***GAME LOOP***
 
-    //Draw Aliens
+    //
 
+    //Draw Aliens
+    for (size_t ai = 0; ai < game.num_aliens; ++ai)
+    {
+        const Alien& alien = game.aliens[ai];
+        drawSprite(&buffer, alien_sprite, alien.x, alien.y, rgbTOuint32(128, 0, 0));
+    }
 
 
     while (!glfwWindowShouldClose(window))
