@@ -136,6 +136,15 @@ struct Sprite
     uint8_t* pixels;
 };
 
+struct SpriteAnimation
+{
+    bool loop;
+    size_t num_frames;
+    size_t frame_duration;
+    size_t time;
+    Sprite** frames;
+};
+
 struct Alien
 {
     size_t x, y; 
