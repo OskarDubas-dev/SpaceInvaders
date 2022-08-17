@@ -362,7 +362,16 @@ int main()
         0,1,0,0,0,0,0,0,0,1,0  // .@.......@.
     };
 
+    //2 frame animation of Alien type 1
     SpriteAnimation* alien_animation = new SpriteAnimation;
+
+    alien_animation->num_frames = 10;
+    alien_animation->frame_duration = 2;
+    alien_animation->loop = true;
+    alien_animation->time = 0;
+    alien_animation->frames = new Sprite * [2];
+    //alien_animation->frames[0] = &alien_sprite
+
 
     // ***ALIEN 1***
 
