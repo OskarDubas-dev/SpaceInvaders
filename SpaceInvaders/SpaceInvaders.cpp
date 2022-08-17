@@ -334,6 +334,7 @@ int main()
     };
 
 
+    //-------------------------------------------------
     // ***ALIEN 1***
     Sprite alien_sprite0;
     alien_sprite0.width = 11;
@@ -375,9 +376,12 @@ int main()
     alien_animation->frames[0] = &alien_sprite0;
     alien_animation->frames[1] = &alien_sprite1;
 
-
     // ***ALIEN 1***
-
+    //---------------------------------------------------
+    
+    
+    
+    
     //Initilise GAME struct
     Game game;
     game.width = buffer_width;
@@ -394,7 +398,17 @@ int main()
 
     //***GAME LOOP***
 
-    
+     //Initilise alien positions
+    for (size_t yi = 0; yi < 5; ++yi)
+    {
+        for (size_t xi = 0; xi < 11; ++xi)
+        {
+            //yi * 11 + xi
+            game.aliens[yi * 11 + xi].x = 16 * xi + 20;
+            game.aliens[yi * 11 + xi].y = 17 * yi + 128;
+
+        }
+    }
     
 
     while (!glfwWindowShouldClose(window))
@@ -403,26 +417,20 @@ int main()
         //glClear(GL_COLOR_BUFFER_BIT);
         bufferClear(&buffer, clear_colour);
 
+        //Draw Player
         drawSprite(&buffer, player_sprite, game.player.x, game.player.y, rgbTOuint32(128, 0, 0));
-
-        //Initilise alien positions
-        for (size_t yi = 0; yi < 5; ++yi)
-        {
-            for (size_t xi = 0; xi < 11; ++xi)
-            {
-                //yi * 11 + xi
-                game.aliens[yi * 11 + xi].x = 16 * xi + 20;
-                game.aliens[yi * 11 + xi].y = 17 * yi + 128;
-
-            }
-        }
-
+       
         //Draw Aliens
         for (size_t ai = 0; ai < game.num_aliens; ++ai)
         {
             const Alien& alien = game.aliens[ai];
             drawSprite(&buffer, alien_sprite0, alien.x, alien.y, rgbTOuint32(128, 0, 0));
         }
+
+
+
+
+
 
         glTexSubImage2D(
             GL_TEXTURE_2D, 0, 0, 0,
