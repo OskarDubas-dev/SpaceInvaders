@@ -368,8 +368,8 @@ int main()
     //2 frame animation of Alien type 1
     SpriteAnimation* alien_animation = new SpriteAnimation;
 
-    alien_animation->num_frames = 10;
-    alien_animation->frame_duration = 2;
+    alien_animation->num_frames = 2;
+    alien_animation->frame_duration = 10;
     alien_animation->loop = true;
     alien_animation->time = 0;
     alien_animation->frames = new Sprite * [2];
@@ -424,10 +424,26 @@ int main()
         for (size_t ai = 0; ai < game.num_aliens; ++ai)
         {
             const Alien& alien = game.aliens[ai];
-            drawSprite(&buffer, alien_sprite0, alien.x, alien.y, rgbTOuint32(128, 0, 0));
+            size_t current_frame = alien_animation->time / alien_animation->frame_duration;
+            const Sprite& sprite = *alien_animation->frames[current_frame];
+            drawSprite(&buffer, sprite, alien.x, alien.y, rgbTOuint32(128, 0, 0));
         }
 
-
+        //Update Animations
+        ++alien_animation->time;
+        if(alien_animation->time == alien_animation->num_frames * alien_animation->frame_duration)
+        {
+            if (alien_animation->loop)
+            {
+                alien_animation->time = 0;
+            }
+            else
+            {
+                delete alien_animation;
+                alien_animation = nullptr;
+            }
+        }
+        
 
 
 
