@@ -333,10 +333,10 @@ int main()
 
 
     // ***ALIEN 1***
-    Sprite alien_sprite;
-    alien_sprite.width = 11;
-    alien_sprite.height = 8;
-    alien_sprite.pixels = new uint8_t[11 * 8]
+    Sprite alien_sprite0;
+    alien_sprite0.width = 11;
+    alien_sprite0.height = 8;
+    alien_sprite0.pixels = new uint8_t[11 * 8]
     {
         0,0,1,0,0,0,0,0,1,0,0, // ..@.....@..
         0,0,0,1,0,0,0,1,0,0,0, // ...@...@...
@@ -418,7 +418,7 @@ int main()
         for (size_t ai = 0; ai < game.num_aliens; ++ai)
         {
             const Alien& alien = game.aliens[ai];
-            drawSprite(&buffer, alien_sprite, alien.x, alien.y, rgbTOuint32(128, 0, 0));
+            drawSprite(&buffer, alien_sprite0, alien.x, alien.y, rgbTOuint32(128, 0, 0));
         }
 
         glTexSubImage2D(
