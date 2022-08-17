@@ -332,6 +332,7 @@ int main()
     };
 
 
+    // ***ALIEN 1***
     Sprite alien_sprite;
     alien_sprite.width = 11;
     alien_sprite.height = 8;
@@ -346,7 +347,6 @@ int main()
         1,0,1,0,0,0,0,0,1,0,1, // @.@.....@.@
         0,0,0,1,1,0,1,1,0,0,0  // ...@@.@@...
     };
-    
     Sprite alien_sprite1;
     alien_sprite1.width = 11;
     alien_sprite1.height = 8;
@@ -361,6 +361,10 @@ int main()
         0,0,1,0,0,0,0,0,1,0,0, // ..@.....@..
         0,1,0,0,0,0,0,0,0,1,0  // .@.......@.
     };
+
+    SpriteAnimation* alien_animation = new SpriteAnimation;
+
+    // ***ALIEN 1***
 
     //Initilise GAME struct
     Game game;
