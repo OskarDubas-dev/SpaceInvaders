@@ -370,7 +370,8 @@ int main()
     alien_animation->loop = true;
     alien_animation->time = 0;
     alien_animation->frames = new Sprite * [2];
-    //alien_animation->frames[0] = &alien_sprite
+    alien_animation->frames[0] = &alien_sprite0;
+    alien_animation->frames[1] = &alien_sprite1;
 
 
     // ***ALIEN 1***
@@ -392,7 +393,7 @@ int main()
     //***GAME LOOP***
 
     
-
+    
 
     while (!glfwWindowShouldClose(window))
     {
