@@ -117,7 +117,10 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
     switch (key)
     {
     case GLFW_KEY_ESCAPE:
-        if (action == GLFW_PRESS) game_running = false;
+        if (action == GLFW_PRESS) {
+            game_running = false;
+            printf("Game exiting...");
+        }
         break;
     }
 }
@@ -222,6 +225,8 @@ int main()
     }
 
     glfwMakeContextCurrent(window);
+
+    glfwSetKeyCallback(window, keyCallback);
 
     //initialize GLEW
     GLenum err = glewInit();
