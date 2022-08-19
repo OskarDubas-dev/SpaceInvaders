@@ -105,6 +105,17 @@ const size_t buffer_height = 256;
 //const size_t buffer_width = 448;
 //const size_t buffer_height = 512;
 
+//Callback for catching input events
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    switch (key)
+    {
+    case GLFW_KEY_ESCAPE:
+        if (action == GLFW_PRESS) game_running = false;
+        break;
+    }
+}
+
 
 struct Buffer
 {
