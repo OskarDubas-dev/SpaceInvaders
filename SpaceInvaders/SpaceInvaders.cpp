@@ -63,6 +63,17 @@ inline void gl_debug(const char* file, int line) {
 
 #undef GL_ERROR_CASE
 
+
+const size_t buffer_width = 224;
+const size_t buffer_height = 256;
+
+//const size_t buffer_width = 448;
+//const size_t buffer_height = 512;
+
+bool game_running = false;
+
+
+
 // Used to intercept OpenGL shader information during compilation
 void validateShader(GLuint shader, const char* file = 0)
 {
@@ -99,11 +110,6 @@ void errorCallback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-const size_t buffer_width = 224;
-const size_t buffer_height = 256;
-
-//const size_t buffer_width = 448;
-//const size_t buffer_height = 512;
 
 //Callback for catching input events
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
