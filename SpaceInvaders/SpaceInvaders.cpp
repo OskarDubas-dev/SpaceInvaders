@@ -122,6 +122,14 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
             printf("Game exiting...");
         }
         break;
+    case GLFW_KEY_RIGHT:
+        if (action == GLFW_PRESS) move_dir += 1;
+        else if (action == GLFW_RELEASE) move_dir -= 1;
+        break;
+    case GLFW_KEY_LEFT:
+        if (action == GLFW_PRESS) move_dir -= 1;
+        else if (action == GLFW_RELEASE) move_dir += 1;
+        break;
     }
 }
 
