@@ -71,7 +71,7 @@ const size_t buffer_height = 256;
 //const size_t buffer_height = 512;
 
 bool game_running = false;
-
+int move_dir = 0;
 
 
 // Used to intercept OpenGL shader information during compilation
@@ -472,6 +472,21 @@ int main()
                 delete alien_animation;
                 alien_animation = nullptr;
             }
+        }
+
+        int player_move_dir = 2 * move_dir;
+
+        if (player_move_dir != 0)
+        {
+            if (game.player.x + player_sprite.width + player_move_dir >= game.width)
+            {
+                game.player.x = game.width - player_sprite.width;
+            }
+            else if ((int)game.player.x + player_move_dir <= 0)
+            {
+                game.player.x = 0;
+            }
+            else game.player.x += player_move_dir;
         }
         
 
