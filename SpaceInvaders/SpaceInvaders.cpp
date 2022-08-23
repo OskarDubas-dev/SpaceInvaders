@@ -380,10 +380,10 @@ int main()
     };
 
     //Bullet Sprite
-    Sprite bullet;
-    bullet.width = 1;
-    bullet.height = 3;
-    bullet.pixels = new uint8_t[3]
+    Sprite projectile_sprite;
+    projectile_sprite.width = 1;
+    projectile_sprite.height = 3;
+    projectile_sprite.pixels = new uint8_t[3]
     {
         1, //@
         1, //@
@@ -445,6 +445,7 @@ int main()
     game.width = buffer_width;
     game.height = buffer_height;
     game.num_aliens = 55;
+    game.num_projectiles = 0;
     game.aliens = new Alien[game.num_aliens];
 
     game.player.x = 112;
@@ -485,7 +486,28 @@ int main()
             const Sprite& sprite = *alien_animation->frames[current_frame];
             drawSprite(&buffer, sprite, alien.x, alien.y, rgbTOuint32(128, 0, 0));
         }
-      
+        //Draw Projectiles
+        for (size_t bi = 0; bi < game.num_projectiles; ++bi)
+        {
+            const Projectile& projectile = game.projectiles[bi];
+            const Sprite& sprite = projectile_sprite;
+            drawSprite(&buffer, sprite, projectile.x, projectile.y, rgbTOuint32(128, 0, 0));
+        }
+        //Projectile movement update
+        for (size_t bi = 0; bi < game.num_projectiles;)
+        {
+            game.projectiles[bi].y += game.projectiles[bi].dir;
+            if (game.projectiles[bi].y >= game.height || game.projectiles[bi].y < projectile_sprite.height)
+            {
+                game.projectiles[bi] = game.projectiles[game.num_projectiles - 1];
+                --game.num_projectiles;
+                continue;
+            }
+
+            ++bi;
+        }
+
+
         //Update Animations
         ++alien_animation->time;
         if(alien_animation->time == alien_animation->num_frames * alien_animation->frame_duration)
@@ -501,8 +523,9 @@ int main()
             }
         }
 
-        int player_move_dir = 2 * move_dir;
 
+        //Player movement update
+        int player_move_dir = 2 * move_dir;
         if (player_move_dir != 0)
         {
             if (game.player.x + player_sprite.width + player_move_dir >= game.width)
@@ -515,6 +538,17 @@ int main()
             }
             else game.player.x += player_move_dir;
         }
+
+
+        //Projectile creation (when space is pressed)
+        if (is_shooting && game.num_projectiles < MAX_PROJECTILES)
+        {
+            game.projectiles[game.num_projectiles].x = game.player.x + player_sprite.width / 2;
+            game.projectiles[game.num_projectiles].y = game.player.y + player_sprite.height;
+            game.projectiles->dir = 2;
+            ++game.num_projectiles;
+        }
+        is_shooting = false;
         
 
 
