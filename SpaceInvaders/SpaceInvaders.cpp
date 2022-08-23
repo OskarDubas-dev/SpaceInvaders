@@ -7,6 +7,21 @@
 //#include <gl/GL.h>
 #include <GLFW/glfw3.h>
 
+//***Globals***
+
+#define MAX_PROJECTILES 128
+
+const size_t buffer_width = 224;
+const size_t buffer_height = 256;
+
+bool game_running = false;
+int move_dir = 0;
+bool is_shooting = 0;
+
+
+///******
+
+
 
 #define GL_ERROR_CASE(glerror)\
     case glerror: snprintf(error, sizeof(error), "%s", #glerror)
@@ -62,17 +77,6 @@ inline void gl_debug(const char* file, int line) {
 }
 
 #undef GL_ERROR_CASE
-
-
-const size_t buffer_width = 224;
-const size_t buffer_height = 256;
-
-//const size_t buffer_width = 448;
-//const size_t buffer_height = 512;
-
-bool game_running = false;
-int move_dir = 0;
-bool is_shooting = 0;
 
 
 // Used to intercept OpenGL shader information during compilation
@@ -461,7 +465,6 @@ int main()
 
         }
     }
-    
 
     while (!glfwWindowShouldClose(window))
     {
