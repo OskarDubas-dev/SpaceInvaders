@@ -545,7 +545,7 @@ int main()
         {
             game.projectiles[game.num_projectiles].x = game.player.x + player_sprite.width / 2;
             game.projectiles[game.num_projectiles].y = game.player.y + player_sprite.height;
-            game.projectiles->dir = 2;
+            game.projectiles[game.num_projectiles].dir = 2;
             ++game.num_projectiles;
         }
         is_shooting = false;
