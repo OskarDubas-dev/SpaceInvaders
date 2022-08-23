@@ -203,6 +203,7 @@ struct Game
 {
     size_t width, height;
     size_t num_aliens;
+    size_t num_projectiles;
     Alien* aliens;
     Player player;
     Projectile projectiles[MAX_PROJECTILES];
@@ -484,7 +485,7 @@ int main()
             const Sprite& sprite = *alien_animation->frames[current_frame];
             drawSprite(&buffer, sprite, alien.x, alien.y, rgbTOuint32(128, 0, 0));
         }
-
+      
         //Update Animations
         ++alien_animation->time;
         if(alien_animation->time == alien_animation->num_frames * alien_animation->frame_duration)
