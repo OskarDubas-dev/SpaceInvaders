@@ -205,6 +205,7 @@ struct Game
     size_t num_aliens;
     Alien* aliens;
     Player player;
+    Projectile projectiles[MAX_PROJECTILES];
 };
 
 //Function draws the "1" pixels at given coordinates if they are within buffer bounds
