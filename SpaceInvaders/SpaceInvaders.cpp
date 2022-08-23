@@ -72,6 +72,7 @@ const size_t buffer_height = 256;
 
 bool game_running = false;
 int move_dir = 0;
+bool is_shooting = 0;
 
 
 // Used to intercept OpenGL shader information during compilation
@@ -130,6 +131,9 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
         if (action == GLFW_PRESS) move_dir -= 1;
         else if (action == GLFW_RELEASE) move_dir += 1;
         break;
+    case GLFW_KEY_SPACE:
+        if (action == GLFW_PRESS) is_shooting = 1;
+        break;
     }
 }
 
@@ -183,6 +187,12 @@ struct Player
 {
     size_t x, y;
     uint8_t life;
+};
+
+struct Projectile
+{
+    size_t x, y;
+    int dir; //up(+) down(-)
 };
 
 struct Game
@@ -362,6 +372,18 @@ int main()
         1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@
         1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@
     };
+
+    //Bullet Sprite
+    Sprite bullet;
+    bullet.width = 1;
+    bullet.height = 3;
+    bullet.pixels = new uint8_t[3]
+    {
+        1, //@
+        1, //@
+        1, //@
+    };
+
 
 
     //-------------------------------------------------
