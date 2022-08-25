@@ -209,6 +209,22 @@ struct Game
     Projectile projectiles[MAX_PROJECTILES];
 };
 
+//check if two sprites are overlapping
+bool isSpriteOverlap(
+    const Sprite& sprite_a, size_t x_a, size_t y_a,
+    const Sprite& sprite_b, size_t x_b, size_t y_b
+)
+{
+    if (x_a < x_b + sprite_b.width && x_a + sprite_a.width > x_b &&
+        y_a < y_b + sprite_b.height && y_a + sprite_a.height > y_b)
+    {
+        return true;
+    }
+
+    return false;
+
+}
+
 //Function draws the "1" pixels at given coordinates if they are within buffer bounds
 void drawSprite(Buffer* buffer, const Sprite& sprite, size_t x, size_t y, uint32_t colour)
 {
