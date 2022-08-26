@@ -143,6 +143,8 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
     case GLFW_KEY_SPACE:
         if (action == GLFW_PRESS) is_shooting = 1;
         break;
+    default:
+        break;
     }
 }
 
