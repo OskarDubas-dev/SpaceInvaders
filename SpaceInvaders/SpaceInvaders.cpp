@@ -500,10 +500,10 @@ int main()
     //***GAME LOOP***
 
     //Initilise death counter
-    uint8_t* death_counter = new uint8_t[game.num_aliens];
+    uint8_t* death_counters = new uint8_t[game.num_aliens];
     for (size_t i = 0; i < game.num_aliens; i++)
     {
-        death_counter[i] = 10;
+        death_counters[i] = 10;
     }
 
 
@@ -532,13 +532,20 @@ int main()
         //Draw Aliens
         for (size_t ai = 0; ai < game.num_aliens; ++ai)
         {
-            const Alien& alien = game.aliens[ai];
-            if (alien.type == ALIEN_DEAD) continue;
+            if (!death_counters[ai]) continue;
 
+            const Alien& alien = game.aliens[ai];
+            if (alien.type == ALIEN_DEAD)
+            {
+                drawSprite(&buffer, explosion_sprite, alien.x, alien.y, rgbTOuint32(128, 0, 0));
+            }
+            else 
+            {
             const SpriteAnimation& animation = alien_animations[alien.type - 1];
             size_t current_frame = animation.time / animation.frame_duration;
             const Sprite& sprite = *animation.frames[current_frame];
             drawSprite(&buffer, sprite, alien.x, alien.y, rgbTOuint32(128, 0, 0));
+            }
         }
         //Draw Projectiles
         for (size_t bi = 0; bi < game.num_projectiles; ++bi)
@@ -557,14 +564,36 @@ int main()
                 --game.num_projectiles;
                 continue;
             }
+            // Check hit
+            for (size_t ai = 0; ai < game.num_aliens; ++ai)
+            {
+                const Alien& alien = game.aliens[ai];
+                if (alien.type == ALIEN_DEAD) continue;
 
+                const SpriteAnimation& animation = alien_animations[alien.type - 1];
+                size_t current_frame = animation.time / animation.frame_duration;
+                const Sprite& alien_sprite = *animation.frames[current_frame];
+                bool overlap = isSpriteOverlap(
+                    projectile_sprite, game.projectiles[bi].x, game.projectiles[bi].y,
+                    alien_sprite, alien.x, alien.y
+                );
+                if (overlap)
+                {
+                    game.aliens[ai].type = ALIEN_DEAD;
+                    // NOTE: Hack to recenter death sprite
+                    game.aliens[ai].x -= (explosion_sprite.width - alien_sprite.width) / 2;
+                    game.projectiles[bi] = game.projectiles[game.num_projectiles - 1];
+                    --game.num_projectiles;
+                    continue;
+                }
+            }
             ++bi;
         }
 
         //Alien death check
         for (size_t ai = 0; ai < game.num_aliens; ++ai)
         {
-            if (!death_counter[ai]) continue;
+            if (!death_counters[ai]) continue;
 
             const Alien& alien = game.aliens[ai];
 
@@ -627,7 +656,6 @@ int main()
 
     glfwDestroyWindow(window);
     glfwTerminate();
-
 
    
 }
