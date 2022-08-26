@@ -265,7 +265,7 @@ int main()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
 
-    //let's creata a window
+    //create a window and OpenGl context
     GLFWwindow*  window = glfwCreateWindow(2 * buffer_width, 2 * buffer_height, "Space Invaders", NULL, NULL);
     if (!window)
     {
@@ -429,13 +429,14 @@ int main()
         0,1,0,0,1,0,0,0,1,0,0,1,0  // .@..@...@..@.
     };
 
+    Sprite alien_sprites[2];
 
     //-------------------------------------------------
     // ***ALIEN 1***
-    Sprite alien_sprite0;
-    alien_sprite0.width = 11;
-    alien_sprite0.height = 8;
-    alien_sprite0.pixels = new uint8_t[11 * 8]
+    
+    alien_sprites[0].width = 11;
+    alien_sprites[0].height = 8;
+    alien_sprites[0].pixels = new uint8_t[11 * 8]
     {
         0,0,1,0,0,0,0,0,1,0,0, // ..@.....@..
         0,0,0,1,0,0,0,1,0,0,0, // ...@...@...
@@ -446,10 +447,10 @@ int main()
         1,0,1,0,0,0,0,0,1,0,1, // @.@.....@.@
         0,0,0,1,1,0,1,1,0,0,0  // ...@@.@@...
     };
-    Sprite alien_sprite1;
-    alien_sprite1.width = 11;
-    alien_sprite1.height = 8;
-    alien_sprite1.pixels = new uint8_t[88]
+    
+    alien_sprites[1].width = 11;
+    alien_sprites[1].height = 8;
+    alien_sprites[1].pixels = new uint8_t[88]
     {
         0,0,1,0,0,0,0,0,1,0,0, // ..@.....@..
         1,0,0,1,0,0,0,1,0,0,1, // @..@...@..@
@@ -461,21 +462,23 @@ int main()
         0,1,0,0,0,0,0,0,0,1,0  // .@.......@.
     };
 
-    //2 frame animation of Alien type 1
-    SpriteAnimation* alien_animation = new SpriteAnimation;
-
-    alien_animation->num_frames = 2;
-    alien_animation->frame_duration = 10;
-    alien_animation->loop = true;
-    alien_animation->time = 0;
-    alien_animation->frames = new Sprite * [2];
-    alien_animation->frames[0] = &alien_sprite0;
-    alien_animation->frames[1] = &alien_sprite1;
-
     // ***ALIEN 1***
     //---------------------------------------------------
     
-    
+    //2 frame animations of Aliens
+    SpriteAnimation alien_animations[1];
+
+    for (size_t i = 0; i < 3; ++i)
+    {
+        alien_animations[i].loop = true;
+        alien_animations[i].num_frames = 2;
+        alien_animations[i].frame_duration = 10;
+        alien_animations[i].time = 0;
+
+        alien_animations[i].frames = new Sprite * [2];
+        alien_animations[i].frames[0] = &alien_sprites[2 * i];
+        alien_animations[i].frames[1] = &alien_sprites[2 * i + 1];
+    }
     
     
     //Initilise GAME struct
