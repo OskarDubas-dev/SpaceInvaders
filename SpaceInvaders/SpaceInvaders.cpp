@@ -528,9 +528,9 @@ int main()
         }
     }
 
+    game_running = true;
 
-
-    while (!glfwWindowShouldClose(window))
+    while (!glfwWindowShouldClose(window) && game_running)
     {
         /* Render here */
         //glClear(GL_COLOR_BUFFER_BIT);
