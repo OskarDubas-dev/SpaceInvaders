@@ -532,8 +532,11 @@ int main()
         for (size_t ai = 0; ai < game.num_aliens; ++ai)
         {
             const Alien& alien = game.aliens[ai];
-            size_t current_frame = alien_animation->time / alien_animation->frame_duration;
-            const Sprite& sprite = *alien_animation->frames[current_frame];
+            if (alien.type == ALIEN_DEAD) continue;
+
+            const SpriteAnimation& animation = alien_animations[alien.type - 1];
+            size_t current_frame = animation.time / animation.frame_duration;
+            const Sprite& sprite = *animation.frames[current_frame];
             drawSprite(&buffer, sprite, alien.x, alien.y, rgbTOuint32(128, 0, 0));
         }
         //Draw Projectiles
