@@ -380,7 +380,7 @@ int main()
     glActiveTexture(GL_TEXTURE0);
     glBindVertexArray(fullscreen_triangle_vao);
 
-    //Initialise SPRITE struct
+    //Initialise Player Sprite struct
     Sprite player_sprite;
     player_sprite.width = 11;
     player_sprite.height = 7;
@@ -406,6 +406,19 @@ int main()
         1, //@
     };
 
+    Sprite explosion_sprite;
+    explosion_sprite.width = 13;
+    explosion_sprite.height = 7;
+    explosion_sprite.pixels = new uint8_t[91]
+    {
+        0,1,0,0,1,0,0,0,1,0,0,1,0, // .@..@...@..@.
+        0,0,1,0,0,1,0,1,0,0,1,0,0, // ..@..@.@..@..
+        0,0,0,1,0,0,0,0,0,1,0,0,0, // ...@.....@...
+        1,1,0,0,0,0,0,0,0,0,0,1,1, // @@.........@@
+        0,0,0,1,0,0,0,0,0,1,0,0,0, // ...@.....@...
+        0,0,1,0,0,1,0,1,0,0,1,0,0, // ..@..@.@..@..
+        0,1,0,0,1,0,0,0,1,0,0,1,0  // .@..@...@..@.
+    };
 
 
     //-------------------------------------------------
