@@ -657,5 +657,24 @@ int main()
     glfwDestroyWindow(window);
     glfwTerminate();
 
+
+    glDeleteVertexArrays(1, &fullscreen_triangle_vao);
+
+    for (size_t i = 0; i < 6; ++i)
+    {
+        delete[] alien_sprites[i].pixels;
+    }
+
+    delete[] explosion_sprite.pixels;
+
+    for (size_t i = 0; i < 3; ++i)
+    {
+        delete[] alien_animations[i].frames;
+    }
+    delete[] buffer.pixels;
+    delete[] game.aliens;
+    delete[] death_counters;
+
+    return 0;
    
 }
