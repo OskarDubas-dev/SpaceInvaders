@@ -513,12 +513,22 @@ int main()
     {
         for (size_t xi = 0; xi < 11; ++xi)
         {
+            Alien& alien = game.aliens[yi * 11 + xi];
+            alien.type = 1;
             //yi * 11 + xi
-            game.aliens[yi * 11 + xi].x = 16 * xi + 20;
-            game.aliens[yi * 11 + xi].y = 17 * yi + 128;
+            /*game.aliens[yi * 11 + xi].x = 16 * xi + 20;
+            game.aliens[yi * 11 + xi].y = 17 * yi + 128;*/
+
+            const Sprite& sprite = alien_sprites[0];
+            //const Sprite& sprite = alien_sprites[2 * (alien.type - 1)];
+
+            alien.x = 16 * xi + 20 + (explosion_sprite.width - sprite.width) / 2;
+            alien.y = 17 * yi + 128;
 
         }
     }
+
+
 
     while (!glfwWindowShouldClose(window))
     {
@@ -660,14 +670,14 @@ int main()
 
     glDeleteVertexArrays(1, &fullscreen_triangle_vao);
 
-    for (size_t i = 0; i < 6; ++i)
+    for (size_t i = 0; i < no_alien_types * 2; ++i)
     {
         delete[] alien_sprites[i].pixels;
     }
 
     delete[] explosion_sprite.pixels;
 
-    for (size_t i = 0; i < 3; ++i)
+    for (size_t i = 0; i < no_alien_types; ++i)
     {
         delete[] alien_animations[i].frames;
     }
