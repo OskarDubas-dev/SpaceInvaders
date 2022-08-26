@@ -21,6 +21,11 @@ bool is_shooting = 0;
 
 ///******
 
+enum AlienType : uint8_t
+{
+    ALIEN_DEAD = 0,
+    ALIEN_TYPE_A = 1
+};
 
 
 #define GL_ERROR_CASE(glerror)\
@@ -486,6 +491,15 @@ int main()
 
     //***GAME LOOP***
 
+    //Initilise death counter
+    uint8_t* death_counter = new uint8_t[game.num_aliens];
+    for (size_t i = 0; i < game.num_aliens; i++)
+    {
+        death_counter[i] = 10;
+    }
+
+
+
      //Initilise alien positions
     for (size_t yi = 0; yi < 5; ++yi)
     {
@@ -536,6 +550,14 @@ int main()
             ++bi;
         }
 
+        //Alien death check
+        for (size_t ai = 0; ai < game.num_aliens; ++ai)
+        {
+            if (!death_counter[ai]) continue;
+
+            const Alien& alien = game.aliens[ai];
+
+        }
 
         //Update Animations
         ++alien_animation->time;
