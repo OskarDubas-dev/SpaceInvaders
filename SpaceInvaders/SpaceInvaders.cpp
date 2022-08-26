@@ -217,6 +217,8 @@ struct Game
 };
 
 //check if two sprites are overlapping
+//we only check sprite rectangles, 
+//we should been checking if any pixel of sprite A overlap with any pixel of sprite B
 bool isSpriteOverlap(
     const Sprite& sprite_a, size_t x_a, size_t y_a,
     const Sprite& sprite_b, size_t x_b, size_t y_b
