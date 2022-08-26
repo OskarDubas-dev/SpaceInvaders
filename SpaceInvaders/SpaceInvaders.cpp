@@ -600,15 +600,15 @@ int main()
             ++bi;
         }
 
-        //Alien death check
+        //Update aliens and aliens death animation
         for (size_t ai = 0; ai < game.num_aliens; ++ai)
         {
-            if (!death_counters[ai]) continue;
-
             const Alien& alien = game.aliens[ai];
-
+            if (alien.type == ALIEN_DEAD && death_counters[ai])
+            {
+                --death_counters[ai];
+            }
         }
-
         // Update animations
         for (size_t i = 0; i < no_alien_types; ++i)
         {
