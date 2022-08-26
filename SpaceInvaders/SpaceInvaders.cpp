@@ -17,6 +17,7 @@ const size_t buffer_height = 256;
 bool game_running = false;
 int move_dir = 0;
 bool is_shooting = 0;
+const int no_alien_types = 1;
 
 
 ///******
@@ -466,9 +467,9 @@ int main()
     //---------------------------------------------------
     
     //2 frame animations of Aliens
-    SpriteAnimation alien_animations[1];
+    SpriteAnimation alien_animations[no_alien_types];
 
-    for (size_t i = 0; i < 3; ++i)
+    for (size_t i = 0; i < no_alien_types; ++i)
     {
         alien_animations[i].loop = true;
         alien_animations[i].num_frames = 2;
@@ -570,7 +571,7 @@ int main()
         }
 
         // Update animations
-        for (size_t i = 0; i < 3; ++i)
+        for (size_t i = 0; i < no_alien_types; ++i)
         {
             ++alien_animations[i].time;
             if (alien_animations[i].time == alien_animations[i].num_frames * alien_animations[i].frame_duration)
