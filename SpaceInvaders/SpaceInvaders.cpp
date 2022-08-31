@@ -18,6 +18,7 @@ bool game_running = false;
 int move_dir = 0;
 bool is_shooting = 0;
 const int no_alien_types = 1;
+int score = 0;
 
 
 ///******
