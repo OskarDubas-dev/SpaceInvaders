@@ -17,7 +17,7 @@ const size_t buffer_height = 256;
 bool game_running = false;
 int move_dir = 0;
 bool is_shooting = 0;
-const int no_alien_types = 1;
+const int no_alien_types = 3;
 int score = 0;
 
 
@@ -431,7 +431,7 @@ int main()
         0,1,0,0,1,0,0,0,1,0,0,1,0  // .@..@...@..@.
     };
 
-    Sprite alien_sprites[4];
+    Sprite alien_sprites[6];
 
     //-------------------------------------------------
     // ***ALIEN 1***
