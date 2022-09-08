@@ -508,6 +508,35 @@ int main()
 
     //-------------------------------------------------
     // ***ALIEN 3***
+
+    alien_sprites[4].width = 12;
+    alien_sprites[4].height = 8;
+    alien_sprites[4].pixels = new uint8_t[96]
+    {
+        0,0,0,0,1,1,1,1,0,0,0,0, // ....@@@@....
+        0,1,1,1,1,1,1,1,1,1,1,0, // .@@@@@@@@@@.
+        1,1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@@
+        1,1,1,0,0,1,1,0,0,1,1,1, // @@@..@@..@@@
+        1,1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@@
+        0,0,0,1,1,0,0,1,1,0,0,0, // ...@@..@@...
+        0,0,1,1,0,1,1,0,1,1,0,0, // ..@@.@@.@@..
+        1,1,0,0,0,0,0,0,0,0,1,1  // @@........@@
+    };
+
+
+    alien_sprites[5].width = 12;
+    alien_sprites[5].height = 8;
+    alien_sprites[5].pixels = new uint8_t[96]
+    {
+        0,0,0,0,1,1,1,1,0,0,0,0, // ....@@@@....
+        0,1,1,1,1,1,1,1,1,1,1,0, // .@@@@@@@@@@.
+        1,1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@@
+        1,1,1,0,0,1,1,0,0,1,1,1, // @@@..@@..@@@
+        1,1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@@
+        0,0,1,1,1,0,0,1,1,1,0,0, // ..@@@..@@@..
+        0,1,1,0,0,1,1,0,0,1,1,0, // .@@..@@..@@.
+        0,0,1,1,0,0,0,0,1,1,0,0  // ..@@....@@..
+    };
     
     // ***ALIEN 3***
     //-------------------------------------------------
@@ -566,14 +595,14 @@ int main()
             Alien& alien = game.aliens[yi * 11 + xi];
             alien.type = 1;
             //yi * 11 + xi
-            /*game.aliens[yi * 11 + xi].x = 16 * xi + 20;
-            game.aliens[yi * 11 + xi].y = 17 * yi + 128;*/
+            game.aliens[yi * 11 + xi].x = 16 * xi + 20;
+            game.aliens[yi * 11 + xi].y = 17 * yi + 128;
 
-            const Sprite& sprite = alien_sprites[0];
-            //const Sprite& sprite = alien_sprites[2 * (alien.type - 1)];
+            //const Sprite& sprite = alien_sprites[0];
+            const Sprite& sprite = alien_sprites[2 * (alien.type - 1)];
 
-            alien.x = 16 * xi + 20 + (explosion_sprite.width - sprite.width) / 2;
-            alien.y = 17 * yi + 128;
+            /*alien.x = 16 * xi + 20 + (explosion_sprite.width - sprite.width) / 2;
+            alien.y = 17 * yi + 128;*/
 
         }
     }
