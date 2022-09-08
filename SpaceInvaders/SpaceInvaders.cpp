@@ -595,7 +595,8 @@ int main()
         for (size_t xi = 0; xi < 11; ++xi)
         {
             Alien& alien = game.aliens[yi * 11 + xi];
-            alien.type = 1;
+            //alien type is changing depending what row we are currently in
+            alien.type = (5 - yi) / 2 + 1;
             //yi * 11 + xi
             game.aliens[yi * 11 + xi].x = 16 * xi + 20;
             game.aliens[yi * 11 + xi].y = 17 * yi + 128;
