@@ -505,7 +505,7 @@ int main()
     // ***ALIEN 2***
     //-------------------------------------------------
 
-
+    
 
 
     //-------------------------------------------------
@@ -581,6 +581,8 @@ int main()
     //***GAME LOOP***
 
     //Initilise death counter
+    //If alien is dead, each frame couter goes down if counter hits 0 sprite won't be drawn
+    //death_counters are only used so explosion sprite is visible for 10 frames
     uint8_t* death_counters = new uint8_t[game.num_aliens];
     for (size_t i = 0; i < game.num_aliens; i++)
     {
@@ -598,8 +600,10 @@ int main()
             //alien type is changing depending what row we are currently in
             alien.type = (5 - yi) / 2 + 1;
             //yi * 11 + xi
-            game.aliens[yi * 11 + xi].x = 16 * xi + 20;
-            game.aliens[yi * 11 + xi].y = 17 * yi + 128;
+
+            //Do I need this?
+           /* game.aliens[yi * 11 + xi].x = 16 * xi + 20;
+            game.aliens[yi * 11 + xi].y = 17 * yi + 128;*/
 
             //const Sprite& sprite = alien_sprites[0];
             const Sprite& sprite = alien_sprites[2 * (alien.type - 1)];
@@ -691,6 +695,9 @@ int main()
                 --death_counters[ai];
             }
         }
+
+
+
         // Update animations
         for (size_t i = 0; i < no_alien_types; ++i)
         {
