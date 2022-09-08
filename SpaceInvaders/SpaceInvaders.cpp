@@ -26,7 +26,9 @@ int score = 0;
 enum AlienType : uint8_t
 {
     ALIEN_DEAD = 0,
-    ALIEN_TYPE_A = 1
+    ALIEN_TYPE_A = 1,
+    ALIEN_TYPE_B = 2,
+    ALIEN_TYPE_C = 3
 };
 
 
@@ -601,8 +603,8 @@ int main()
             //const Sprite& sprite = alien_sprites[0];
             const Sprite& sprite = alien_sprites[2 * (alien.type - 1)];
 
-            /*alien.x = 16 * xi + 20 + (explosion_sprite.width - sprite.width) / 2;
-            alien.y = 17 * yi + 128;*/
+            alien.x = 16 * xi + 20 + (explosion_sprite.width - sprite.width) / 2;
+            alien.y = 17 * yi + 128;
 
         }
     }
