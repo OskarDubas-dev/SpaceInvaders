@@ -181,6 +181,9 @@ void bufferClear(Buffer* buffer, uint32_t colour)
     }
 }
 
+
+//xorshift random number generator
+//https://en.wikipedia.org/wiki/Xorshift
 struct xorshift32_state {
     uint32_t a;
 };
