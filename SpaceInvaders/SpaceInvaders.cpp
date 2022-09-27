@@ -20,6 +20,8 @@ bool is_shooting = 0;
 const int no_alien_types = 3;
 int score = 0;
 
+//debug
+bool alien_is_shooting = 0;
 
 ///******
 
@@ -146,6 +148,9 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
         break;
     case GLFW_KEY_SPACE:
         if (action == GLFW_PRESS) is_shooting = 1;
+        break;
+    case GLFW_KEY_P:
+        if (action == GLFW_PRESS) alien_is_shooting = 1;
         break;
     default:
         break;
