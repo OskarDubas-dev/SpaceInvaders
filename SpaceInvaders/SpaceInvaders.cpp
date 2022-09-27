@@ -444,16 +444,16 @@ int main()
     Sprite alien_projectile_sprite[2];
     alien_projectile_sprite[0].width = 3;
     alien_projectile_sprite[0].height = 7;
-    alien_projectile_sprite[0].pixels = new uint8_t[21];
+    alien_projectile_sprite[0].pixels = new uint8_t[21]
     {
-
-    }
+        0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0,
+    };
     alien_projectile_sprite[1].width = 3;
     alien_projectile_sprite[1].height = 7;
-    alien_projectile_sprite[1].pixels = new uint8_t[21];
+    alien_projectile_sprite[1].pixels = new uint8_t[21]
     {
-
-    }
+        0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0,
+    };
 
 
     Sprite explosion_sprite;
