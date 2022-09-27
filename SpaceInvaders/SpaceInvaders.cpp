@@ -455,6 +455,16 @@ int main()
         0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0,
     };
 
+    //Alien bullet animation (it was a bolt thingy in the original game)
+    SpriteAnimation alien_projectile_animation;
+    alien_projectile_animation.num_frames = 2;
+    alien_projectile_animation.frame_duration = 5;
+    alien_projectile_animation.loop = true;
+    alien_projectile_animation.time = 0;
+    alien_projectile_animation.frames = new Sprite*;
+    alien_projectile_animation.frames[0] = &alien_projectile_sprite[0];
+    alien_projectile_animation.frames[1] = &alien_projectile_sprite[1];
+
 
     Sprite explosion_sprite;
     explosion_sprite.width = 13;
