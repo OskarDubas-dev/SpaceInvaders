@@ -176,6 +176,27 @@ void bufferClear(Buffer* buffer, uint32_t colour)
     }
 }
 
+struct xorshift32_state {
+    uint32_t a;
+};
+
+/* The state word must be initialized to non-zero */
+uint32_t xorshift32(struct xorshift32_state* state)
+{
+    /* Algorithm "xor" from p. 4 of Marsaglia, "Xorshift RNGs" */
+    uint32_t x = state->a;
+    x ^= x << 13;
+    x ^= x >> 17;
+    x ^= x << 5;
+    return state->a = x;
+}
+
+double random(xorshift32_state* state)
+{
+    return (double)xorshift32(state) / std::numeric_limits<uint32_t>::max();
+}
+
+
 struct Sprite
 {
     
@@ -562,6 +583,9 @@ int main()
         alien_animations[i].frames[1] = &alien_sprites[2 * i + 1];
     }
     
+    //xorshift random number generator
+    xorshift32_state state{13};
+
     
     //Initilise GAME struct
     Game game;
@@ -614,7 +638,6 @@ int main()
         }
     }
 
-    game_running = true;
 
     while (!glfwWindowShouldClose(window) && game_running)
     {
@@ -686,7 +709,7 @@ int main()
             ++bi;
         }
 
-        //Update aliens and aliens death animation
+        //Update aliens and aliens death animation (death_counter)
         for (size_t ai = 0; ai < game.num_aliens; ++ai)
         {
             const Alien& alien = game.aliens[ai];
