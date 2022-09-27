@@ -372,7 +372,6 @@ int main()
     glBindVertexArray(fullscreen_triangle_vao);
 
     GLuint shader_id = glCreateProgram();
-
     //Create vertex shader
     {
         GLuint shader_vp = glCreateShader(GL_VERTEX_SHADER);
@@ -677,6 +676,7 @@ int main()
     {
         /* Render here */
         //glClear(GL_COLOR_BUFFER_BIT);
+
         bufferClear(&buffer, clear_colour);
 
         //Draw Player
@@ -793,7 +793,7 @@ int main()
         }
 
 
-        //Projectile creation (when space is pressed)
+           //Projectile creation (when space is pressed)
         if (is_shooting && game.num_projectiles < MAX_PROJECTILES)
         {
             game.projectiles[game.num_projectiles].x = game.player.x + player_sprite.width / 2;
@@ -802,10 +802,20 @@ int main()
             ++game.num_projectiles;
         }
         is_shooting = false;
+
+        //Projectile creation (when space is pressed)
+        if (alien_is_shooting && game.num_projectiles < MAX_PROJECTILES)
+        {
+            game.projectiles[game.num_projectiles].x = game.player.x + player_sprite.width / 2;
+            game.projectiles[game.num_projectiles].y = game.player.y + player_sprite.height;
+            game.projectiles[game.num_projectiles].dir = -2;
+            ++game.num_projectiles;
+        }
+        alien_is_shooting = false;
         
 
 
-
+      
 
         glTexSubImage2D(
             GL_TEXTURE_2D, 0, 0, 0,
@@ -813,12 +823,14 @@ int main()
             GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
             buffer.pixels
         );
-
+        
         glDrawArrays(GL_TRIANGLES, 0, 4);
-
+       
+        
         glfwSwapBuffers(window);
 
         glfwPollEvents();
+       // glClear(GL_COLOR_BUFFER_BIT);
     }
 
     glfwDestroyWindow(window);
