@@ -438,10 +438,10 @@ int main()
     };
 
     //Player Bullet Sprite
-    Sprite projectile_sprite;
-    projectile_sprite.width = 1;
-    projectile_sprite.height = 3;
-    projectile_sprite.pixels = new uint8_t[3]
+    Sprite player_projectile_sprite;
+    player_projectile_sprite.width = 1;
+    player_projectile_sprite.height = 3;
+    player_projectile_sprite.pixels = new uint8_t[3]
     {
         1, //@
         1, //@
@@ -709,7 +709,7 @@ int main()
             
             const Projectile& projectile = game.projectiles[bi];
             const Sprite* sprite;
-            if (projectile.dir > 0) sprite = &projectile_sprite;
+            if (projectile.dir > 0) sprite = &player_projectile_sprite;
             drawSprite(&buffer, *sprite, projectile.x, projectile.y, rgbTOuint32(128, 0, 0));
         
         }
@@ -717,7 +717,7 @@ int main()
         for (size_t bi = 0; bi < game.num_projectiles;)
         {
             game.projectiles[bi].y += game.projectiles[bi].dir;
-            if (game.projectiles[bi].y >= game.height || game.projectiles[bi].y < projectile_sprite.height)
+            if (game.projectiles[bi].y >= game.height || game.projectiles[bi].y < player_projectile_sprite.height)
             {
                 game.projectiles[bi] = game.projectiles[game.num_projectiles - 1];
                 --game.num_projectiles;
@@ -733,7 +733,7 @@ int main()
                 size_t current_frame = animation.time / animation.frame_duration;
                 const Sprite& alien_sprite = *animation.frames[current_frame];
                 bool overlap = isSpriteOverlap(
-                    projectile_sprite, game.projectiles[bi].x, game.projectiles[bi].y,
+                    player_projectile_sprite, game.projectiles[bi].x, game.projectiles[bi].y,
                     alien_sprite, alien.x, alien.y
                 );
                 if (overlap)
