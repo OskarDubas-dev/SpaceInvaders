@@ -710,6 +710,11 @@ int main()
             const Projectile& projectile = game.projectiles[bi];
             const Sprite* sprite;
             if (projectile.dir > 0) sprite = &player_projectile_sprite;
+            else
+            {
+                size_t f = alien_projectile_animation.time / alien_projectile_animation.frame_duration;
+                sprite = &alien_projectile_sprite[f];
+            }
             drawSprite(&buffer, *sprite, projectile.x, projectile.y, rgbTOuint32(128, 0, 0));
         
         }
