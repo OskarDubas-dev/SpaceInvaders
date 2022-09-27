@@ -429,7 +429,7 @@ int main()
         1,1,1,1,1,1,1,1,1,1,1, // @@@@@@@@@@@
     };
 
-    //Bullet Sprite
+    //Player Bullet Sprite
     Sprite projectile_sprite;
     projectile_sprite.width = 1;
     projectile_sprite.height = 3;
@@ -439,6 +439,22 @@ int main()
         1, //@
         1, //@
     };
+
+    //Alien Bullet Sprite
+    Sprite alien_projectile_sprite[2];
+    alien_projectile_sprite[0].width = 3;
+    alien_projectile_sprite[0].height = 7;
+    alien_projectile_sprite[0].pixels = new uint8_t[21];
+    {
+
+    }
+    alien_projectile_sprite[1].width = 3;
+    alien_projectile_sprite[1].height = 7;
+    alien_projectile_sprite[1].pixels = new uint8_t[21];
+    {
+
+    }
+
 
     Sprite explosion_sprite;
     explosion_sprite.width = 13;
