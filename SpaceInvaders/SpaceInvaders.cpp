@@ -703,9 +703,15 @@ int main()
         //Draw Projectiles
         for (size_t bi = 0; bi < game.num_projectiles; ++bi)
         {
+            //const Projectile& projectile = game.projectiles[bi];
+            //const Sprite& sprite = projectile_sprite;
+            //drawSprite(&buffer, sprite, projectile.x, projectile.y, rgbTOuint32(128, 0, 0));
+            
             const Projectile& projectile = game.projectiles[bi];
-            const Sprite& sprite = projectile_sprite;
-            drawSprite(&buffer, sprite, projectile.x, projectile.y, rgbTOuint32(128, 0, 0));
+            const Sprite* sprite;
+            if (projectile.dir > 0) sprite = &projectile_sprite;
+            drawSprite(&buffer, *sprite, projectile.x, projectile.y, rgbTOuint32(128, 0, 0));
+        
         }
         //Projectile movement update
         for (size_t bi = 0; bi < game.num_projectiles;)
