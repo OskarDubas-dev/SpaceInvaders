@@ -461,7 +461,7 @@ int main()
     alien_projectile_animation.frame_duration = 5;
     alien_projectile_animation.loop = true;
     alien_projectile_animation.time = 0;
-    alien_projectile_animation.frames = new Sprite*;
+    alien_projectile_animation.frames = new Sprite*[2];
     alien_projectile_animation.frames[0] = &alien_projectile_sprite[0];
     alien_projectile_animation.frames[1] = &alien_projectile_sprite[1];
 
@@ -626,7 +626,7 @@ int main()
 
     game.player.life = 3;
 
-   
+    game_running = true;
 
     //***GAME LOOP***
 
