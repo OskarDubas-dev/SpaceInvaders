@@ -744,6 +744,8 @@ int main()
                 if (overlap)
                 {
                     game.aliens[ai].type = ALIEN_DEAD;
+                    score += 10 * (1 + game.aliens[ai].type);
+                    printf("%i", score);
                     // NOTE: Hack to recenter death sprite
                     game.aliens[ai].x -= (explosion_sprite.width - alien_sprite.width) / 2;
                     game.projectiles[bi] = game.projectiles[game.num_projectiles - 1];
@@ -836,6 +838,7 @@ int main()
     glfwDestroyWindow(window);
     glfwTerminate();
 
+    
 
     glDeleteVertexArrays(1, &fullscreen_triangle_vao);
 
