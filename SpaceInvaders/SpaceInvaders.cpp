@@ -655,7 +655,10 @@ int main()
         {
             Alien& alien = game.aliens[yi * 11 + xi];
             //alien type is changing depending what row we are currently in
-            alien.type = (5 - yi) / 2 + 1;
+            //alien.type = 4 - (yi / 2.5) - 1;
+            alien.type = 5 + (yi / 2) - 4;
+            //alien.type = (5 - yi) / 2 + 1;
+            std::cout << (int)alien.type;
             //yi * 11 + xi
 
             //Do I need this?
@@ -746,11 +749,11 @@ int main()
                 );
                 if (overlap)
                 {
+                    int score_gained = alien.type;
                     score += 10 * (1 + alien.type);
                     game.aliens[ai].type = ALIEN_DEAD;
-                    
-                    
-                    printf("%i", score);
+                    printf("%i", score_gained);
+
                     // NOTE: Hack to recenter death sprite
                     game.aliens[ai].x -= (explosion_sprite.width - alien_sprite.width) / 2;
                     game.projectiles[bi] = game.projectiles[game.num_projectiles - 1];
