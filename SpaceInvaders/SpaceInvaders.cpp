@@ -490,7 +490,7 @@ int main()
     Sprite alien_sprites[6];
 
     //-------------------------------------------------
-     // ***ALIEN 1***
+    // ***ALIEN 1***
 
     alien_sprites[0].width = 12;
     alien_sprites[0].height = 8;
@@ -523,7 +523,6 @@ int main()
 
     // ***ALIEN 1***
     //-------------------------------------------------
-
 
     //-------------------------------------------------
     // ***ALIEN 2***
@@ -559,11 +558,7 @@ int main()
     // ***ALIEN 2***
     //-------------------------------------------------
 
-    
-
-
-  
-       //-------------------------------------------------
+    //-------------------------------------------------
     // ***ALIEN 3***
 
     alien_sprites[4].width = 11;
@@ -659,8 +654,7 @@ int main()
             //alien.type = 4 - (yi / 2.5) - 1;
             alien.type = 5 + (yi / 2) - 4;
             //alien.type = (5 - yi) / 2 + 1;
-            std::cout << (int)alien.type;
-            //yi * 11 + xi
+           
 
             //Do I need this?
            /* game.aliens[yi * 11 + xi].x = 16 * xi + 20;
@@ -750,10 +744,11 @@ int main()
                 );
                 if (overlap)
                 {
-                    int score_gained = alien.type;
+                    //SCORING = type1 = 20 points, type2 = 30 points, type3 = 40 points
+                    //int score_gained = alien.type;
                     score += 10 * (1 + alien.type);
                     game.aliens[ai].type = ALIEN_DEAD;
-                    printf("%i", score_gained);
+                    printf("%i", score);
 
                     // NOTE: Hack to recenter death sprite
                     game.aliens[ai].x -= (explosion_sprite.width - alien_sprite.width) / 2;
