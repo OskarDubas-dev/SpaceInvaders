@@ -635,7 +635,7 @@ int main()
 
     game_running = true;
 
-    //***GAME LOOP***
+    
 
     //Initilise death counter
     //If alien is dead, each frame couter goes down if counter hits 0 sprite won't be drawn
@@ -668,9 +668,12 @@ int main()
             alien.x = 16 * xi + 20 + (explosion_sprite.width - sprite.width) / 2;
             alien.y = 17 * yi + 128;
 
+           // std::cout << (int)alien.type << std::endl;
+
         }
     }
 
+    //***GAME LOOP***
 
     while (!glfwWindowShouldClose(window) && game_running)
     {
@@ -743,8 +746,10 @@ int main()
                 );
                 if (overlap)
                 {
+                    score += 10 * (1 + alien.type);
                     game.aliens[ai].type = ALIEN_DEAD;
-                    score += 10 * (1 + game.aliens[ai].type);
+                    
+                    
                     printf("%i", score);
                     // NOTE: Hack to recenter death sprite
                     game.aliens[ai].x -= (explosion_sprite.width - alien_sprite.width) / 2;
