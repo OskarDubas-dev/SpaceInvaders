@@ -811,7 +811,12 @@ int main()
         }
     }
 
+    /////////////////////////////////////////////
+    /////////////////////////////////////////////
     //***GAME LOOP***
+    /////////////////////////////////////////////
+    /////////////////////////////////////////////
+
 
     while (!glfwWindowShouldClose(window) && game_running)
     {
@@ -835,6 +840,16 @@ int main()
             164, 7,
             rgbTOuint32(128, 0, 0)
         );
+
+
+        drawNumber(
+            &buffer, 
+            number_spritesheet,
+            score, 
+            4 + 2 * number_spritesheet.width, 
+            game.height - 2 * number_spritesheet.height - 12, 
+            rgbTOuint32(128, 0, 0)
+            );
 
         //Draw Player
         drawSprite(&buffer, player_sprite, game.player.x, game.player.y, rgbTOuint32(128, 0, 0));
