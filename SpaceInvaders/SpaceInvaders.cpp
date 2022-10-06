@@ -795,11 +795,18 @@ int main()
         bufferClear(&buffer, clear_colour);
 
 
-
+        //Draw Text and Score
         drawText(
             &buffer,
             text_spritesheet, "SCORE",
             4, game.height - text_spritesheet.height - 7,
+            rgbTOuint32(128, 0, 0)
+        );
+
+        drawText(
+            &buffer,
+            text_spritesheet, "LIVES",
+            164, 7,
             rgbTOuint32(128, 0, 0)
         );
 
