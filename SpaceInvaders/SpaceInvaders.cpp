@@ -850,7 +850,15 @@ int main()
             4 + 2 * number_spritesheet.width, 
             game.height - 2 * number_spritesheet.height - 12, 
             rgbTOuint32(128, 0, 0)
-            );
+        );
+
+        drawNumber(
+            &buffer,
+            number_spritesheet,
+            player_life,
+            200, 7,
+            rgbTOuint32(128, 0, 0)
+        );
 
 
         //Draw Player
