@@ -19,6 +19,7 @@ int move_dir = 0;
 bool is_shooting = 0;
 const int no_alien_types = 3;
 int score = 0;
+int player_life = 2;
 
 //debug
 bool alien_is_shooting = 0;
@@ -850,6 +851,7 @@ int main()
             game.height - 2 * number_spritesheet.height - 12, 
             rgbTOuint32(128, 0, 0)
             );
+
 
         //Draw Player
         drawSprite(&buffer, player_sprite, game.player.x, game.player.y, rgbTOuint32(128, 0, 0));
