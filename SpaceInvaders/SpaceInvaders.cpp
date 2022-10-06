@@ -313,6 +313,32 @@ void drawText(Buffer* buffer, const Sprite& text_spritesheet, const char* text, 
     }
 }
 
+void drawNumber(Buffer* buffer, const Sprite& number_spritesheet, size_t number, size_t x, size_t y, uint32_t colour)
+{
+    uint8_t digits[64];
+    size_t num_digits = 0;
+
+    size_t current_number = number;
+    do
+    {
+        digits[num_digits++] = current_number % 10;
+        current_number = current_number / 10;
+    } while (current_number > 0);
+
+    size_t xp = x;
+    size_t stride = number_spritesheet.width * number_spritesheet.height;
+    Sprite sprite = number_spritesheet;
+    for (size_t i = 0; i < num_digits; ++i)
+    {
+        uint8_t digit = digits[num_digits - i - 1];
+        sprite.pixels = number_spritesheet.pixels + digit * stride;
+        drawSprite(buffer, sprite, xp, y, colour);
+        xp += sprite.width + 1;
+    }
+
+
+}
+
 int main()
 {
     glfwSetErrorCallback(errorCallback);
