@@ -371,6 +371,9 @@ int main()
     buffer.pixels = new uint32_t[buffer.width * buffer.height];
     bufferClear(&buffer, 0);
 
+  
+
+
     //Generate texture
     GLuint buffer_texture;
     glGenTextures(1, &buffer_texture);
@@ -790,6 +793,15 @@ int main()
         //glClear(GL_COLOR_BUFFER_BIT);
 
         bufferClear(&buffer, clear_colour);
+
+
+
+        drawText(
+            &buffer,
+            text_spritesheet, "SCORE",
+            4, game.height - text_spritesheet.height - 7,
+            rgbTOuint32(128, 0, 0)
+        );
 
         //Draw Player
         drawSprite(&buffer, player_sprite, game.player.x, game.player.y, rgbTOuint32(128, 0, 0));
