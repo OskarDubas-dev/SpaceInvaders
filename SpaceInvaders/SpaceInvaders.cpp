@@ -902,8 +902,22 @@ int main()
             drawSprite(&buffer, *sprite, projectile.x, projectile.y, rgbTOuint32(128, 0, 0));
         
         }
+
+
+    /*    glTexSubImage2D(
+            GL_TEXTURE_2D, 0, 0, 0,
+            buffer.width, buffer.height,
+            GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
+            buffer.pixels
+        );
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+        glfwSwapBuffers(window);*/
+
+
+
         //Projectile movement update
-        for (size_t bi = 0; bi < game.num_projectiles;)
+        for (size_t bi = 0; bi < game.num_projectiles; ++bi)
         {
             game.projectiles[bi].y += game.projectiles[bi].dir;
             // Delete bullet if out of range
@@ -939,37 +953,82 @@ int main()
 
                 }
             }
-
-            // Check hit
-            for (size_t ai = 0; ai < game.num_aliens; ++ai)
+            // Player bullet
+            else 
             {
-                const Alien& alien = game.aliens[ai];
-                if (alien.type == ALIEN_DEAD) continue;
-
-                const SpriteAnimation& animation = alien_animations[alien.type - 1];
-                size_t current_frame = animation.time / animation.frame_duration;
-                const Sprite& alien_sprite = *animation.frames[current_frame];
-                bool overlap = isSpriteOverlap(
-                    player_projectile_sprite, game.projectiles[bi].x, game.projectiles[bi].y,
-                    alien_sprite, alien.x, alien.y
-                );
-                if (overlap)
+                // First let's check if player bullet hits alien bullet
+                for (size_t b = 0; b < game.num_projectiles; b++)
                 {
-                    //SCORING = type1 = 20 points, type2 = 30 points, type3 = 40 points
-                    //int score_gained = alien.type;
-                    game.score += 10 * (1 + alien.type);
-                    game.aliens[ai].type = ALIEN_DEAD;
-                    
+                    if (b == bi) continue;
 
-                    // NOTE: Hack to recenter death sprite
-                    game.aliens[ai].x -= (explosion_sprite.width - alien_sprite.width) / 2;
-                    game.projectiles[bi] = game.projectiles[game.num_projectiles - 1];
-                    --game.num_projectiles;
+                    bool isBulletsHit = isSpriteOverlap(
+                        player_projectile_sprite,
+                        game.projectiles[bi].x,
+                        game.projectiles[bi].y,
+                        alien_projectile_sprite[0],
+                        game.projectiles[b].x,
+                        game.projectiles[b].y
+                    );
 
-                    continue;
+                    if (isBulletsHit)
+                    {
+                        if (b == game.num_projectiles - 1)
+                        {
+                            game.projectiles[bi] = game.projectiles[game.num_projectiles - 2];
+                        }
+                        else if (bi == game.num_projectiles - 1)
+                        {
+                            game.projectiles[b] = game.projectiles[game.num_projectiles - 2];
+                        }
+                        else
+                        {
+                            game.projectiles[(bi < b) ? bi : b] = game.projectiles[game.num_projectiles - 1];
+                            game.projectiles[(bi < b) ? b : bi] = game.projectiles[game.num_projectiles - 2];
+                        }
+                        game.num_projectiles -= 2;
+                        break;
+                    }
+
+
+                }
+
+                // Check hit
+                for (size_t ai = 0; ai < game.num_aliens; ++ai)
+                {
+                    const Alien& alien = game.aliens[ai];
+                    if (alien.type == ALIEN_DEAD) continue;
+
+                    const SpriteAnimation& animation = alien_animations[alien.type - 1];
+                    size_t current_frame = animation.time / animation.frame_duration;
+                    const Sprite& alien_sprite = *animation.frames[current_frame];
+                    bool isAlienHit = isSpriteOverlap(
+                        player_projectile_sprite, 
+                        game.projectiles[bi].x, 
+                        game.projectiles[bi].y,
+                        alien_sprite, 
+                        alien.x, 
+                        alien.y
+                    );
+                    if (isAlienHit)
+                    {
+                        //SCORING = type1 = 20 points, type2 = 30 points, type3 = 40 points
+                        //int score_gained = alien.type;
+                        game.score += 10 * (1 + alien.type);
+                        game.aliens[ai].type = ALIEN_DEAD;
+
+
+                        // NOTE: Hack to recenter death sprite
+                        game.aliens[ai].x -= (explosion_sprite.width - alien_sprite.width) / 2;
+                        game.projectiles[bi] = game.projectiles[game.num_projectiles - 1];
+                        --game.num_projectiles;
+
+                        break;
+                    }
                 }
             }
-            ++bi;
+            
+           
+            //++bi;
         }
 
         //Update aliens and aliens death animation (death_counter)
@@ -1021,15 +1080,15 @@ int main()
         }
         is_shooting = false;
 
-        //Projectile creation (when space is pressed)
-        if (alien_is_shooting && game.num_projectiles < MAX_PROJECTILES)
-        {
-            game.projectiles[game.num_projectiles].x = game.player.x + player_sprite.width / 2;
-            game.projectiles[game.num_projectiles].y = game.player.y + player_sprite.height;
-            game.projectiles[game.num_projectiles].dir = -2;
-            ++game.num_projectiles;
-        }
-        alien_is_shooting = false;
+        ////Projectile creation (when space is pressed)
+        //if (alien_is_shooting && game.num_projectiles < MAX_PROJECTILES)
+        //{
+        //    game.projectiles[game.num_projectiles].x = game.player.x + player_sprite.width / 2;
+        //    game.projectiles[game.num_projectiles].y = game.player.y + player_sprite.height;
+        //    game.projectiles[game.num_projectiles].dir = -2;
+        //    ++game.num_projectiles;
+        //}
+        //alien_is_shooting = false;
         
 
 
