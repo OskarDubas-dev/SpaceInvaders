@@ -18,8 +18,7 @@ bool game_running = false;
 int move_dir = 0;
 bool is_shooting = 0;
 const int no_alien_types = 3;
-int score = 0;
-int player_life = 2;
+
 
 //debug
 bool alien_is_shooting = 0;
@@ -245,6 +244,7 @@ struct Game
     size_t width, height;
     size_t num_aliens;
     size_t num_projectiles;
+    size_t score;
     Alien* aliens;
     Player player;
     Projectile projectiles[MAX_PROJECTILES];
@@ -768,6 +768,7 @@ int main()
     game.player.x = 112;
     game.player.y = 32;
 
+    game.score = 0;
     game.player.life = 3;
 
     game_running = true;
@@ -846,7 +847,7 @@ int main()
         drawNumber(
             &buffer, 
             number_spritesheet,
-            score, 
+            game.score, 
             4 + 2 * number_spritesheet.width, 
             game.height - 2 * number_spritesheet.height - 12, 
             rgbTOuint32(128, 0, 0)
@@ -956,9 +957,9 @@ int main()
                 {
                     //SCORING = type1 = 20 points, type2 = 30 points, type3 = 40 points
                     //int score_gained = alien.type;
-                    score += 10 * (1 + alien.type);
+                    game.score += 10 * (1 + alien.type);
                     game.aliens[ai].type = ALIEN_DEAD;
-                    printf("%i", score);
+                    
 
                     // NOTE: Hack to recenter death sprite
                     game.aliens[ai].x -= (explosion_sprite.width - alien_sprite.width) / 2;
