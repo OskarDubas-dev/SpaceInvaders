@@ -765,7 +765,7 @@ int main()
 
     game.aliens_killed = 0;
     game.alien_update_timer = 0;
-    game.alien_update_frequency = 20;
+    game.alien_update_frequency = 120;
     bool should_change_speed = false;
 
     int alien_move_dir = 4;
@@ -1066,18 +1066,27 @@ int main()
                 alien_animations[i].frame_duration = game.alien_update_frequency;
             }
         }
-
-
-        size_t randA = game.num_aliens * random(&state);
-        while (game.aliens[randA].type == ALIEN_DEAD)
+        
+        if (game.alien_update_timer >= game.alien_update_frequency)
         {
-            randA = game.num_aliens * random(&state);
+            game.alien_update_timer = 0;
+
+            if (game.aliens_killed < game.num_aliens)
+            {
+                size_t randA = game.num_aliens * random(&state);
+                while (game.aliens[randA].type == ALIEN_DEAD)
+                {
+                    randA = game.num_aliens * random(&state);
+                }
+                const Sprite& alien_sprite = *alien_animations[game.aliens[randA].type - 1].frames[0];
+                game.projectiles[game.num_projectiles].x = game.aliens[randA].x + alien_sprite.width / 2;
+                game.projectiles[game.num_projectiles].y = game.aliens[randA].y - alien_projectile_sprite[0].height;
+                game.projectiles[game.num_projectiles].dir = -2;
+                ++game.num_projectiles;
+            }
         }
-        const Sprite& alien_sprite = *alien_animations[game.aliens[randA].type - 1].frames[0];
-        game.projectiles[game.num_projectiles].x = game.aliens[randA].x + alien_sprite.width / 2;
-        game.projectiles[game.num_projectiles].y = game.aliens[randA].y - alien_projectile_sprite[0].height;
-        game.projectiles[game.num_projectiles].dir = -2;
-        ++game.num_projectiles;
+
+        
 
 
         //Update aliens and aliens death animation (death_counter)
