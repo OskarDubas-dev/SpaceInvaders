@@ -19,6 +19,8 @@ int move_dir = 0;
 bool is_shooting = 0;
 const int no_alien_types = 3;
 
+
+
 uint32_t rng = 13;
 
 //debug
@@ -246,6 +248,9 @@ struct Game
     size_t num_aliens;
     size_t num_projectiles;
     size_t score;
+    size_t aliens_killed;
+    size_t alien_update_timer;
+    size_t alien_update_frequency;
     Alien* aliens;
     Player player;
     Projectile projectiles[MAX_PROJECTILES];
@@ -739,20 +744,6 @@ int main()
 
 
 
-    //2 frame animations of Aliens
-    SpriteAnimation alien_animations[no_alien_types];
-
-    for (size_t i = 0; i < no_alien_types; ++i)
-    {
-        alien_animations[i].loop = true;
-        alien_animations[i].num_frames = 2;
-        alien_animations[i].frame_duration = 10;
-        alien_animations[i].time = 0;
-
-        alien_animations[i].frames = new Sprite * [2];
-        alien_animations[i].frames[0] = &alien_sprites[2 * i];
-        alien_animations[i].frames[1] = &alien_sprites[2 * i + 1];
-    }
     
     //xorshift random number generator
     xorshift32_state state{13};
@@ -772,7 +763,38 @@ int main()
     game.score = 0;
     game.player.life = 3;
 
+    game.aliens_killed = 0;
+    game.alien_update_timer = 0;
+    game.alien_update_frequency = 20;
+    bool should_change_speed = false;
+
+    int alien_move_dir = 4;
+    size_t alien_swarm_position = 24;
+    size_t alien_swarm_max_position = game.width - 16 * 11 - 3;
+
+
+
+
+    //2 frame animations of Aliens
+    SpriteAnimation alien_animations[no_alien_types];
+
+    for (size_t i = 0; i < no_alien_types; ++i)
+    {
+        alien_animations[i].loop = true;
+        alien_animations[i].num_frames = 2;
+        alien_animations[i].frame_duration = game.alien_update_frequency;
+        alien_animations[i].time = 0;
+
+        alien_animations[i].frames = new Sprite * [2];
+        alien_animations[i].frames[0] = &alien_sprites[2 * i];
+        alien_animations[i].frames[1] = &alien_sprites[2 * i + 1];
+    }
+
+
     game_running = true;
+
+
+
 
     
 
@@ -806,7 +828,7 @@ int main()
             //const Sprite& sprite = alien_sprites[0];
             const Sprite& sprite = alien_sprites[2 * (alien.type - 1)];
 
-            alien.x = 16 * xi + 20 + (explosion_sprite.width - sprite.width) / 2;
+            alien.x = 16 * xi + alien_swarm_position + (explosion_sprite.width - sprite.width) / 2;
             alien.y = 17 * yi + 128;
 
            // std::cout << (int)alien.type << std::endl;
@@ -1035,6 +1057,17 @@ int main()
 
         //Alien AI 
 
+        if (should_change_speed)
+        {
+            should_change_speed = false;
+            game.alien_update_frequency /= 2;
+            for (size_t i = 0; i < no_alien_types; i++)
+            {
+                alien_animations[i].frame_duration = game.alien_update_frequency;
+            }
+        }
+
+
         size_t randA = game.num_aliens * random(&state);
         while (game.aliens[randA].type == ALIEN_DEAD)
         {
@@ -1075,6 +1108,7 @@ int main()
             alien_projectile_animation.time = 0;
         }
 
+        game.alien_update_timer++;
 
         //Player movement update
         int player_move_dir = 2 * move_dir;
