@@ -913,6 +913,32 @@ int main()
                 --bi;
                 continue;
             }
+
+            // Alien bullet
+            if (game.projectiles[bi].dir < 0)
+            {
+                bool isPlayerHit = isSpriteOverlap(
+                    alien_projectile_sprite[0],
+                    game.projectiles[bi].x,
+                    game.projectiles[bi].y,
+                    player_sprite,
+                    game.player.x,
+                    game.player.y);
+
+                if (isPlayerHit)
+                {
+                    --game.player.life;
+                    game.projectiles[bi] = game.projectiles[game.num_projectiles - 1];
+                    --game.num_projectiles;
+                    
+                    //TODO: rest of the frame is still going to be simulated so we need checks if game over or not
+
+                    
+                    break;
+
+                }
+            }
+
             // Check hit
             for (size_t ai = 0; ai < game.num_aliens; ++ai)
             {
