@@ -891,6 +891,7 @@ int main()
             
             const Projectile& projectile = game.projectiles[bi];
             const Sprite* sprite;
+
             if (projectile.dir > 0) sprite = &player_projectile_sprite;
             else
             {
@@ -904,10 +905,12 @@ int main()
         for (size_t bi = 0; bi < game.num_projectiles;)
         {
             game.projectiles[bi].y += game.projectiles[bi].dir;
+            // Delete bullet if out of range
             if (game.projectiles[bi].y >= game.height || game.projectiles[bi].y < player_projectile_sprite.height)
             {
                 game.projectiles[bi] = game.projectiles[game.num_projectiles - 1];
                 --game.num_projectiles;
+                --bi;
                 continue;
             }
             // Check hit
@@ -935,6 +938,7 @@ int main()
                     game.aliens[ai].x -= (explosion_sprite.width - alien_sprite.width) / 2;
                     game.projectiles[bi] = game.projectiles[game.num_projectiles - 1];
                     --game.num_projectiles;
+
                     continue;
                 }
             }
