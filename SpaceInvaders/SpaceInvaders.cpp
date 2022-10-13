@@ -19,6 +19,7 @@ int move_dir = 0;
 bool is_shooting = 0;
 const int no_alien_types = 3;
 
+uint32_t rng = 13;
 
 //debug
 bool alien_is_shooting = 0;
@@ -1031,6 +1032,21 @@ int main()
             //++bi;
         }
 
+
+        //Alien AI 
+
+        size_t randA = game.num_aliens * random(&state);
+        while (game.aliens[randA].type == ALIEN_DEAD)
+        {
+            randA = game.num_aliens * random(&state);
+        }
+        const Sprite& alien_sprite = *alien_animations[game.aliens[randA].type - 1].frames[0];
+        game.projectiles[game.num_projectiles].x = game.aliens[randA].x + alien_sprite.width / 2;
+        game.projectiles[game.num_projectiles].y = game.aliens[randA].y - alien_projectile_sprite[0].height;
+        game.projectiles[game.num_projectiles].dir = -2;
+        ++game.num_projectiles;
+
+
         //Update aliens and aliens death animation (death_counter)
         for (size_t ai = 0; ai < game.num_aliens; ++ai)
         {
@@ -1051,6 +1067,12 @@ int main()
             {
                 alien_animations[i].time = 0;
             }
+        }
+
+        ++alien_projectile_animation.time;
+        if (alien_projectile_animation.time >= alien_projectile_animation.num_frames * alien_projectile_animation.frame_duration)
+        {
+            alien_projectile_animation.time = 0;
         }
 
 
