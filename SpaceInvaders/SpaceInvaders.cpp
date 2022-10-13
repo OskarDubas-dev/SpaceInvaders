@@ -855,7 +855,7 @@ int main()
         drawNumber(
             &buffer,
             number_spritesheet,
-            player_life,
+            game.player.life,
             200, 7,
             rgbTOuint32(128, 0, 0)
         );
