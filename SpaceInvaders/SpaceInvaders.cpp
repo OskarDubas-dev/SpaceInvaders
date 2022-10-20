@@ -21,7 +21,7 @@ const int no_alien_types = 3;
 
 
 
-uint32_t rng = 13;
+uint32_t rng = 30;
 
 //debug
 bool alien_is_shooting = 0;
@@ -746,7 +746,7 @@ int main()
 
     
     //xorshift random number generator
-    xorshift32_state state{13};
+    xorshift32_state state{rng};
 
     
     //Initilise GAME struct
@@ -765,7 +765,7 @@ int main()
 
     game.aliens_killed = 0;
     game.alien_update_timer = 0;
-    game.alien_update_frequency = 120;
+    game.alien_update_frequency = 30;
     bool should_change_speed = false;
 
     int alien_move_dir = 4;
@@ -782,7 +782,7 @@ int main()
     {
         alien_animations[i].loop = true;
         alien_animations[i].num_frames = 2;
-        alien_animations[i].frame_duration = game.alien_update_frequency;
+        alien_animations[i].frame_duration = 10;
         alien_animations[i].time = 0;
 
         alien_animations[i].frames = new Sprite * [2];
@@ -849,6 +849,31 @@ int main()
         //glClear(GL_COLOR_BUFFER_BIT);
 
         bufferClear(&buffer, clear_colour);
+
+
+
+        if (game.player.life == 0)
+        {
+
+            drawText(&buffer, text_spritesheet, "GAME OVER", game.width / 2 - 30, game.height / 2, rgbTOuint32(128, 0, 0));
+            drawText(&buffer, text_spritesheet, "SCORE", 4, game.height - text_spritesheet.height - 7, rgbTOuint32(128, 0, 0));
+            drawNumber(&buffer, number_spritesheet, game.score, 4 + 2 * number_spritesheet.width, game.height - 2 * number_spritesheet.height - 12, rgbTOuint32(128, 0, 0));
+
+            glTexSubImage2D(
+                GL_TEXTURE_2D, 0, 0, 0,
+                buffer.width, buffer.height,
+                GL_RGBA, GL_UNSIGNED_INT_8_8_8_8,
+                buffer.pixels
+            );
+            glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+            continue;
+        }
+
+
+
 
 
         //Draw Text and Score
